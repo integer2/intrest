@@ -1,4 +1,3 @@
-import FormInputText from "./FormInputText";
+import FormInput from './FormInput';
 
-export {FormInputText}
-
+export { FormInput };

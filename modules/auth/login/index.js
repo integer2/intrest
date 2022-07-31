@@ -3,7 +3,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Button } from '@/components/button';
 import { AuthFormContainer } from '@/components/form-container';
-import FormInput from '@/components/form-input/FormInput';
+import { FormInput } from '@/components/form-input';
 import formRegister from '@/utils/form-register';
 import routes from '@/libs/routes';
 
@@ -29,6 +29,7 @@ const LoginModule = () => {
           <FormInput
             type={'email'}
             label={'Email'}
+            id={'email'}
             isBlock
             isRequired
             isFull
@@ -38,6 +39,7 @@ const LoginModule = () => {
           <FormInput
             type={'password'}
             label={'Password'}
+            id={'password'}
             isBlock
             isRequired
             isFull
