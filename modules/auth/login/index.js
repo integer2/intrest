@@ -1,10 +1,11 @@
 import Link from 'next/link';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { Button } from '../../../components/button';
-import { AuthFormContainer } from '../../../components/form-container';
-import FormInput from '../../../components/form-input/FormInput';
-import formRegister from '../../../utils/form-register';
+import { Button } from '@/components/button';
+import { AuthFormContainer } from '@/components/form-container';
+import FormInput from '@/components/form-input/FormInput';
+import formRegister from '@/utils/form-register';
+import routes from '@/libs/routes';
 
 const LoginModule = () => {
   const {
@@ -45,11 +46,14 @@ const LoginModule = () => {
           />
         </div>
         <div className="space-y-5">
-          <Button isPrimary isFull isRounded>
+          <Button isPrimary isFull isRounded type={'submit'}>
             Login
           </Button>
           <p className="text-gray-600 text-center">
-            Don&#39;t have an account yet? <Link href={'/auth/register'}><a className='font-semibold'>Register</a></Link>
+            Don&#39;t have an account yet?{' '}
+            <Link href={routes.registration}>
+              <a className="font-semibold">Register</a>
+            </Link>
           </p>
         </div>
       </div>

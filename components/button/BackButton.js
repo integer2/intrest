@@ -9,7 +9,11 @@ const BackButton = ({ className }) => {
     router.back();
   };
   return (
-    <button onClick={onClick} className={classNames('h-6 w-6', className)}>
+    <button
+      onClick={onClick}
+      className={classNames('h-6 w-6', className)}
+      type="button"
+    >
       <ArrowLeftIcon />
     </button>
   );
