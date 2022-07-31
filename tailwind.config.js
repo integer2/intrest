@@ -13,6 +13,9 @@ module.exports = {
       boxShadow: {
         form: '0px 4px 40px 0px #00000040;',
       },
+      fontFamily: {
+        poppins: "'Poppins', sans-serif",
+      },
     },
   },
   plugins: [],

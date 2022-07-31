@@ -23,7 +23,11 @@ const RegistrationModule = () => {
     <AuthFormContainer onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col space-y-10">
         <div className="text-center">
-          <h1 className="text-purple text-2xl font-semibold">Welcome</h1>
+          <h1 className="text-purple text-4xl font-bold">
+            <Link href={routes.home}>
+              <a>INTREST</a>
+            </Link>
+          </h1>
           <p className="text-gray-600">Share With Community</p>
         </div>
         <div className="flex flex-col gap-5">
