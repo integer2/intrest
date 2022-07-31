@@ -22,7 +22,7 @@ const LoginModule = () => {
     <AuthFormContainer onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col space-y-10">
         <div className="text-center">
-          <h1 className="text-purple text-4xl font-bold">
+          <h1 className="text-purple-1 text-4xl font-bold">
             <Link href={routes.home}>
               <a>INTREST</a>
             </Link>

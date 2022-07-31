@@ -16,7 +16,7 @@ const Button = ({
       onClick={onClick}
       className={classNames(
         'flex px-4 py-2 items-center justify-center font-medium hover:opacity-90',
-        isPrimary && 'bg-purple text-white',
+        isPrimary && 'bg-purple-1 text-white',
         isFull && 'w-full',
         isRounded && 'rounded-full',
         className

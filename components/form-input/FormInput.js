@@ -31,7 +31,7 @@ const FormInput = ({
         type={type}
         id={id}
         className={classNames(
-          'rounded-sm p-3 border border-gray-300 focus:outline-purple text-gray-600',
+          'rounded-sm p-3 border border-gray-300 focus:outline-purple-1 focus:outline-8 text-gray-600',
           isFull && 'w-full',
           error && 'border-red-600'
         )}
