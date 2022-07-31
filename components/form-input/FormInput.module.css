@@ -1,0 +1,7 @@
+.inputBlock > * {
+  display: block;
+}
+
+.inputFull {
+  width: 100%;
+}
