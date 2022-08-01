@@ -61,6 +61,7 @@ module.exports = {
           turqoise: '#2EC3C2',
           lavender: '#AF52DE',
         },
+        main: '#EAE9E9',
       },
       boxShadow: {
         form: '0px 4px 40px 0px #00000040;',
