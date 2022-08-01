@@ -1,0 +1,11 @@
+.container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.container::-webkit-scrollbar-thumb {
+  @apply bg-gray-4 rounded-full bg-opacity-0  ;
+}
+
+.container:hover.container::-webkit-scrollbar-thumb {
+  @apply  bg-opacity-100;
+}

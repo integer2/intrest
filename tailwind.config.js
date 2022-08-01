@@ -21,7 +21,7 @@ module.exports = {
           1: '#4A4A4A',
           2: '#A6A6A6',
           3: '#BFBFBF',
-          4: '#CCCCCC',
+          4: '#BDBDBD',
           5: '#E5E5E5',
           6: '#F4F4F4',
         },
@@ -64,6 +64,7 @@ module.exports = {
       },
       boxShadow: {
         form: '0px 4px 40px 0px #00000040;',
+        sidebar: '0px 0px 4px 0px #00000040',
       },
       fontFamily: {
         poppins: "'Poppins', sans-serif",
