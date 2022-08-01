@@ -1,17 +1,9 @@
-import formidable from 'formidable';
+import authorization from "middlewares/authorization";
 
-export default async function handler(req, res) {
-  // create an incoming form object
-  const form = new formidable.IncomingForm();
-  form.parse(req, async (err, fields, file) => {
-    console.log(fields);
-    console.log(file);
-    res.status(200).json({ message: 'test' });
-  });
+export default function handler(req, res) {
+  if(req.method !== "POST")  return res.status(405).json({ error: "Method not allowed" });
+  authorization(req);
+  res.status(200).json({
+    message: "Halo Apa Kabar"
+  })
 }
-
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};

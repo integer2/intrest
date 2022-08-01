@@ -6,8 +6,10 @@ import Link from 'next/link';
 import routes from '@/libs/routes';
 import { FormInput } from '@/components/form-input';
 import formRegister from '@/utils/form-register';
+import API from '@/services/api';
+import { toast } from 'react-toastify';
 
-const RegistrationModule = () => {
+const RegisterModule = () => {
   const {
     register,
     handleSubmit,
@@ -15,8 +17,12 @@ const RegistrationModule = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    try {
+      await API.post('/auth/register', data);
+    } catch (error) {
+      toast.error(error.response.data.error);
+    }
   };
 
   return (
@@ -88,4 +94,4 @@ const RegistrationModule = () => {
   );
 };
 
-export default RegistrationModule;
+export default RegisterModule;

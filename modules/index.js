@@ -1,4 +1,4 @@
 import LoginModule from './auth/login';
-import RegistrationModule from './auth/registration';
+import RegisterModule from './auth/register';
 
-export { LoginModule, RegistrationModule };
+export { LoginModule, RegisterModule as RegistrationModule };

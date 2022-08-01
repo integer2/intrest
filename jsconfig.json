@@ -6,6 +6,8 @@
       "@/modules/*": ["modules/*"],
       "@/libs/*": ["libs/*"],
       "@/utils/*": ["utils/*"],
+      "@/services/*": ["services/*"],
+      "@/middlewares/*": ["middlewares/*"],
     }
   }
 }
