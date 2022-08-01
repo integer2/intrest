@@ -1,7 +1,7 @@
 const routes = {
   home: '/',
   login: '/auth/login',
-  registration: '/auth/registration',
+  registration: '/auth/register',
   forgotPassword: '/auth/forgot-password',
   resetPassword: '/auth/reset-password',
   profile: '/profile',
@@ -9,7 +9,7 @@ const routes = {
   notification: '/notification',
   followers: '/followers',
   likes: '/likes',
-  user: '/user'
+  user: '/user',
 };
 
 export default routes;

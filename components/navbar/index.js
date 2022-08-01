@@ -1,6 +1,5 @@
 import routes from '@/libs/routes';
 import { BellIcon, PlusIcon } from '@heroicons/react/solid';
-import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { Button } from '../button';
