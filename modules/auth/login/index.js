@@ -6,6 +6,8 @@ import { AuthFormContainer } from '@/components/form-container';
 import { FormInput } from '@/components/form-input';
 import formRegister from '@/utils/form-register';
 import routes from '@/libs/routes';
+import { toast } from 'react-toastify';
+import API from '@/services/api';
 
 const LoginModule = () => {
   const {
@@ -14,8 +16,14 @@ const LoginModule = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    try {
+      const result = await API.post('/auth/login', data);
+      toast.success(result.data.message);
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response.data.message);
+    }
   };
 
   return (

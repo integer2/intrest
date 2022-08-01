@@ -19,7 +19,8 @@ const RegisterModule = () => {
 
   const onSubmit = async (data) => {
     try {
-      await API.post('/auth/register', data);
+      const result = await API.post('/auth/register', data);
+      toast.success(result.data.message);
     } catch (error) {
       toast.error(error.response.data.error);
     }
