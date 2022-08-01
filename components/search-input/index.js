@@ -4,10 +4,7 @@ import { Button } from '../button';
 
 const SearchInput = ({ onSubmit }) => {
   return (
-    <form
-      onSubmit={(e) => e.preventDefault}
-      className="w-full max-w-[713px] flex gap-7"
-    >
+    <form onSubmit={onSubmit} className="w-full max-w-[713px] flex gap-7">
       <div className="relative flex items-center gap-6 px-5 py-2 border rounded-md max-w-[573px] flex-1 bg-white">
         <SearchIcon className="h-5 w-5" />
         <input
