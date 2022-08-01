@@ -7,6 +7,7 @@ const Button = ({
   isFull,
   isRounded,
   className,
+  isLarge,
   type,
   onClick,
 }) => {
@@ -15,10 +16,11 @@ const Button = ({
       type={type}
       onClick={onClick}
       className={classNames(
-        'flex px-4 py-2 items-center justify-center font-medium hover:opacity-90 rounded-sm',
+        'flex px-5 py-3 items-center justify-center font-medium hover:opacity-90 rounded-sm',
         isPrimary && 'bg-purple-1 text-white',
         isFull && 'w-full',
         isRounded && 'rounded-full',
+        isLarge && 'min-w-[110px]',
         className
       )}
     >

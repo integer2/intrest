@@ -13,7 +13,7 @@ const SearchInput = ({ onSubmit }) => {
           className="focus:outline-none w-full flex-1 bg-transparent"
         />
       </div>
-      <Button isPrimary type={'submit'} className={'px-7'}>
+      <Button isPrimary type={'submit'} isLarge>
         Search
       </Button>
     </form>
