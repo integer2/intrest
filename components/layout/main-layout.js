@@ -5,7 +5,9 @@ import Sidebar from '../sidebar';
 const MainLayout = () => {
   return (
     <div className="flex">
-      <Sidebar />
+      <div>
+        <Sidebar />
+      </div>
       <div className="flex-1 bg-main">
         <Navbar />
       </div>
