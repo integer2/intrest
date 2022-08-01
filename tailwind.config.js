@@ -61,11 +61,12 @@ module.exports = {
           turqoise: '#2EC3C2',
           lavender: '#AF52DE',
         },
-        main: '#EAE9E9',
+        main: '#F4F4F4',
       },
       boxShadow: {
-        form: '0px 4px 40px 0px #00000040;',
+        form: '0px 4px 40px 0px #00000040',
         sidebar: '0px 0px 4px 0px #00000040',
+        button: '0px 0px 1px 0px #00000040',
       },
       fontFamily: {
         poppins: "'Poppins', sans-serif",
