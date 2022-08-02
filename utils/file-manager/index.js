@@ -1,8 +1,8 @@
 import { deleteAsync } from 'del';
 import mv from 'mv';
 
-export const deleteFile = async (filePat) => {
-  await deleteAsync([filePat]);
+export const deleteFile = async (filePath) => {  
+  await deleteAsync([filePath]);
 };
 
 export const moveFile = async (file) => {

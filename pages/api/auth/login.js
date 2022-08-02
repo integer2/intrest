@@ -11,9 +11,7 @@ export default async function handler(req, res) {
 
     const { email, password } = req.body;
 
-    const result = await db.query(`CALL loginUser(?, ?)`, [email, password]);
-
-    const data = result[0][0][0];
+    const data = await db.userLogin(email, password);
 
     const token = jwt.sign(
       {
@@ -30,7 +28,7 @@ export default async function handler(req, res) {
       message: 'Login successful',
       token,
     });
-
+    
   } catch (error) {
     return res.status(500).json({
       error: error.message,

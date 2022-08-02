@@ -16,15 +16,14 @@ export default async function handler(req, res) {
     const { id: author_id } = auth;
     const img_url = `/uploads/images/${newPath.split('/').pop()}`;
 
-    await db
-      .query('CALL createPost(?, ?, ?)', [author_id, img_url, fields.desc])
-      .catch((err) => {
-        deleteFile(newPath);
-        throw err;
-      });
+    await db.createPost(author_id, img_url, fields.desc).catch((error) => {
+      deleteFile(newPath);
+      throw error;
+    });
 
     return res.status(200).json({ message: 'Create post successful' });
   } catch (error) {
+    console.error(error);
     return res.status(500).json({ error: error.message });
   }
 }

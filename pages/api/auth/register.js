@@ -10,11 +10,7 @@ export default async function handler(req, res) {
 
     const { username, email, password } = req.body;
 
-    const result = await db.query(`CALL createNewUser(?, ?, ?)`, [
-      username,
-      email,
-      password,
-    ]);
+    await db.createNewUser(username, email, password);
 
     res.status(200).json({ message: 'Register successfull' });
   } catch (error) {
