@@ -18,9 +18,14 @@ export default function ProfileHeader() {
           <Link href="/user/[username]" as={`/user/${'ichsnn'}`}>
             <a className="text-2xl font-medium text-dark-1">ichsnn</a>
           </Link>
-          <Button className={'border-dark-4 text-dark-4 px-2 py-1'}>
-            Edit Profile
-          </Button>
+          <Link href={'/accounts/edit'}>
+            <Button
+              className={'border-dark-4 text-dark-4 px-2 py-1'}
+              type={'button'}
+            >
+              Edit Profile
+            </Button>
+          </Link>
         </div>
         <div className="flex gap-5 text-purple-1 font-medium">
           <span>6 Post</span>
