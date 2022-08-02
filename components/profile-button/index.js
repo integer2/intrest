@@ -1,22 +1,20 @@
 import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { UserCircleIcon, LogoutIcon } from '@heroicons/react/outline';
 import Link from 'next/link';
 
 const ProfileButton = ({ user }) => {
   const [showDropdown, setShowDropdown] = useState(false);
+  const profileDropdown = useRef();
 
-  const toggleDropdown = () => {
+  const toggleDropdown = (e) => {
     setShowDropdown(!showDropdown);
   };
 
-  useEffect(() => {
-    // close
-  });
 
   return (
-    <div className="relative">
-      <button className="flex gap-5 items-center" onClick={toggleDropdown}>
+    <div className="relative" ref={profileDropdown} onClick={toggleDropdown}>
+      <button className="flex gap-5 items-center">
         <div className="relative h-[50px] w-[50px] rounded-full overflow-hidden shadow-button">
           <Image
             src={'/assets/images/no-profile.jpg'}

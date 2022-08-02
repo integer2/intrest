@@ -7,7 +7,7 @@ export const AuthContext = createContext({
   isAuthenticated: false,
   loading: false,
   setLoading: () => {},
-  login: () => {},
+  login: Promise,
   logout: () => {},
 });
 
@@ -16,7 +16,12 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  const login = () => {};
+  const login = async (data) => {
+    const result = await API().post('/auth/login', data);
+    Cookies.set('token', result.data.token, { expires: 7 });
+    setIsAuthenticated(true);
+  };
+
   const logout = () => {};
 
   const getUser = async () => {
@@ -35,6 +40,14 @@ export const AuthProvider = ({ children }) => {
     }
     setLoading(false);
   }, []);
+
+  useEffect(() => {
+    setLoading(true);
+    if (Cookies.get('token')) {
+      getUser();
+    }
+    setLoading(false);
+  }, [isAuthenticated]);
 
   return (
     <AuthContext.Provider

@@ -7,11 +7,10 @@ import { FormInput } from '@/components/form-input';
 import formRegister from '@/utils/form-register';
 import routes from '@/libs/routes';
 import { toast } from 'react-toastify';
-import API from '@/services/api';
 import { LoadingNormal } from '@/components/loading-spinner';
 import useLoading from 'hooks/useLoading';
-import Cookies from 'js-cookie';
 import Router from 'next/router';
+import { useAuth } from 'context/auth';
 
 const LoginModule = () => {
   const {
@@ -20,16 +19,18 @@ const LoginModule = () => {
     formState: { errors },
   } = useForm();
 
+  const auth = useAuth();
+
   const [loading, setLoading] = useLoading(false);
 
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      const result = await API().post('/auth/login', data);
-      Cookies.set('token', result.data.token, { expires: 7 });
-      Router.replace(routes.home)
+      await auth.login(data);
+      Router.replace(routes.home);
     } catch (error) {
-      toast.error(error.response.data.message);
+      console.log(error)
+      toast.error('Login unsuccessful');
     } finally {
       setLoading(false);
     }
