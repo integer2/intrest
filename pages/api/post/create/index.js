@@ -1,18 +1,17 @@
 import db from '@/libs/db';
-import formidable from 'formidable';
-import { authorization } from 'middlewares';
+import { authorization, dataForm } from 'middlewares';
 import { deleteFile, moveFile } from '@/utils/file-manager';
 
 export default async function handler(req, res) {
   try {
     if (req.method !== 'POST')
       return res.status(405).json({ error: 'Method not allowed' });
+      
     const auth = await authorization(req, res);
-
-    const { id: author_id } = auth;
-    const { fields, files } = await getDataForm(req);
-
+    const { fields, files } = await dataForm(req);
     const newPath = await moveFile(files.image);
+    
+    const { id: author_id } = auth;
     const img_url = `/uploads/images/${newPath.split('/').pop()}`;
 
     await db
@@ -26,17 +25,6 @@ export default async function handler(req, res) {
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
-}
-
-function getDataForm(req) {
-  return new Promise((resolve, reject) => {
-    const form = new formidable.IncomingForm();
-
-    form.parse(req, (err, fields, files) => {
-      if (err) return reject(err);
-      resolve({ fields, files });
-    });
-  });
 }
 
 export const config = {
