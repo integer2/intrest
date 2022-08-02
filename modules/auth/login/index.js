@@ -12,7 +12,6 @@ import { LoadingNormal } from '@/components/loading-spinner';
 import useLoading from 'hooks/useLoading';
 import Cookies from 'js-cookie';
 import Router from 'next/router';
-import useAuth from 'hooks/useAuth';
 
 const LoginModule = () => {
   const {
@@ -21,15 +20,12 @@ const LoginModule = () => {
     formState: { errors },
   } = useForm();
 
-  const auth = useAuth();
-
   const [loading, setLoading] = useLoading(false);
 
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      const result = await API.post('/auth/login', data);
-      auth.login(result.data.token);
+      const result = await API().post('/auth/login', data);
       Cookies.set('token', result.data.token, { expires: 7 });
       Router.replace(routes.home)
     } catch (error) {

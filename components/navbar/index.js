@@ -17,7 +17,7 @@ const Navbar = () => {
         <SearchInput onSubmit={searchSubmit} />
       </div>
       <div className="flex gap-7">
-        <AuthNavbarMenu />
+        <AuthNavbarMenu/>
         <UnauthNavbarMenu />
       </div>
     </div>

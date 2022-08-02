@@ -31,7 +31,6 @@ const Sidebar = () => {
             <MenuGroup title={'Menu'} datamenu={DataSidebarMenu} />
 
             <FollowMenu />
-
           </div>
           <div className="pb-7 text-gray-4 font-medium text-sm">
             © 2022 IntegerTeam
