@@ -3,7 +3,7 @@ import React from 'react';
 
 const ImageCard = () => {
   return (
-    <div className="aspect-square w-full relative">
+    <div className="aspect-square w-full relative cursor-pointer">
       <Image
         src={'/assets/images/no-profile.jpg'}
         layout={'fill'}

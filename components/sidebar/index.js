@@ -16,7 +16,7 @@ const Sidebar = () => {
   return (
     <div
       className={classNames(
-        ' bg-white w-[255px] sticky top-0 h-screen shadow-sidebar overflow-y-scroll',
+        ' bg-white w-[255px] sticky top-0 h-screen border-r overflow-y-scroll',
         styles.container
       )}
     >

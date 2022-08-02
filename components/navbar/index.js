@@ -1,21 +1,43 @@
 import routes from '@/libs/routes';
 import { BellIcon, PlusIcon } from '@heroicons/react/solid';
+import classNames from 'classnames';
 import { useAuth } from 'context/auth';
 import Router from 'next/router';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from '../button';
 import ProfileButton from '../profile-button';
 import SearchInput from '../search-input';
 
 const Navbar = () => {
   const auth = useAuth();
+  const [isScroll, setIsScroll] = useState(false);
 
   const searchSubmit = (e) => {
     e.preventDefault();
   };
 
+  const onScroll = (e) => {
+    if (window.scrollY > 0) {
+      setIsScroll(true);
+    } else {
+      setIsScroll(false);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', onScroll);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+    };
+  });
+
   return (
-    <div className="flex gap-7 justify-between items-center container py-7 px-10">
+    <div
+      className={classNames(
+        'sticky top-0 z-20 bg-main flex gap-7 justify-between items-center container py-7 px-10',
+        isScroll && 'border-b-2 shadow-sm'
+      )}
+    >
       <div className="flex-1">
         <SearchInput onSubmit={searchSubmit} />
       </div>

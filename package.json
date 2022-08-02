@@ -19,6 +19,7 @@
     "mv": "^2.1.1",
     "mysql2": "^2.3.3",
     "next": "12.2.3",
+    "nextjs-progressbar": "^0.0.14",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.34.0",

@@ -27,7 +27,7 @@ const ProfileButton = ({ user }) => {
         </p> */}
       </button>
       {showDropdown && (
-        <div className="absolute right-0 top-full mt-2 flex flex-col divide-y-2 min-w-[200px] bg-white shadow-md text-dark-4 rounded-md">
+        <div className="absolute z-50 right-0 top-full mt-2 flex flex-col divide-y-2 min-w-[200px] bg-white shadow-md text-dark-4 rounded-md">
           <div>
             <Link href={'/user/[username]'} as={`/user/${user.username}`}>
               <a className="flex items-center w-full py-2 px-4 gap-2 hover:bg-gray-6">

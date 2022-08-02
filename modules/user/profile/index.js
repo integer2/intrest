@@ -8,7 +8,7 @@ import ImageCard from '@/components/image-card';
 const UserProfileModule = () => {
   return (
     <div className="flex flex-col gap-16">
-      <div className="sticky top-0 border-b-2 py-8 z-10 bg-main w-full">
+      <div className=" top-0 py-8 z-10 bg-main w-full">
         <ProfileHeader />
       </div>
       <div className="flex flex-col gap-8">
