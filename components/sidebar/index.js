@@ -29,7 +29,9 @@ const Sidebar = () => {
         <div className="flex flex-col gap-10 justify-between h-full">
           <div className="flex flex-col gap-10">
             <MenuGroup title={'Menu'} datamenu={DataSidebarMenu} />
+
             <FollowMenu />
+
           </div>
           <div className="pb-7 text-gray-4 font-medium text-sm">
             © 2022 IntegerTeam
