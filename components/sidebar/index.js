@@ -9,8 +9,10 @@ import styles from './Sidebar.module.css';
 import classNames from 'classnames';
 import Link from 'next/link';
 import routes from '@/libs/routes';
+import { useAuth } from 'context/auth';
 
 const Sidebar = () => {
+  const auth = useAuth();
   return (
     <div
       className={classNames(
@@ -30,7 +32,7 @@ const Sidebar = () => {
           <div className="flex flex-col gap-10">
             <MenuGroup title={'Menu'} datamenu={DataSidebarMenu} />
 
-            <FollowMenu />
+            {auth.user && <FollowMenu />}
           </div>
           <div className="pb-7 text-gray-4 font-medium text-sm">
             © 2022 IntegerTeam

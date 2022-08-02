@@ -1,15 +1,19 @@
+import { useAuth } from 'context/auth';
 import React from 'react';
 import Navbar from '../navbar';
 import Sidebar from '../sidebar';
+import { NavbarSkeleton, SidebarSkeleton } from '../skeleton';
 
-const MainLayout = () => {
+const MainLayout = ({ children }) => {
+  const auth = useAuth();
   return (
     <div className="flex">
       <div>
-        <Sidebar />
+        {!auth.loading ? <Sidebar /> : <SidebarSkeleton />}
       </div>
       <div className="flex-1 bg-main">
-        <Navbar />
+        {!auth.loading ? <Navbar /> : <NavbarSkeleton />}
+        <div className='container'>{children}</div>
       </div>
     </div>
   );

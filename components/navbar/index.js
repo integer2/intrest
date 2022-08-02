@@ -1,5 +1,6 @@
 import routes from '@/libs/routes';
 import { BellIcon, PlusIcon } from '@heroicons/react/solid';
+import { useAuth } from 'context/auth';
 import Router from 'next/router';
 import React from 'react';
 import { Button } from '../button';
@@ -7,6 +8,8 @@ import ProfileButton from '../profile-button';
 import SearchInput from '../search-input';
 
 const Navbar = () => {
+  const auth = useAuth();
+
   const searchSubmit = (e) => {
     e.preventDefault();
   };
@@ -17,8 +20,8 @@ const Navbar = () => {
         <SearchInput onSubmit={searchSubmit} />
       </div>
       <div className="flex gap-7">
-        <AuthNavbarMenu/>
-        <UnauthNavbarMenu />
+        {auth.user && <AuthNavbarMenu />}
+        {!auth.user && <UnauthNavbarMenu />}
       </div>
     </div>
   );
@@ -27,6 +30,7 @@ const Navbar = () => {
 export default Navbar;
 
 export const AuthNavbarMenu = () => {
+  const auth = useAuth();
   return (
     <>
       <div>
@@ -42,7 +46,7 @@ export const AuthNavbarMenu = () => {
           </div>
         </Button>
       </div>
-      <ProfileButton username={'Not Found'} />
+      <ProfileButton user={auth.user} />
     </>
   );
 };

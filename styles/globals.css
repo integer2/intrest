@@ -7,3 +7,7 @@
     @apply font-poppins;
   }
 }
+
+.container {
+  @apply p-10;
+}
