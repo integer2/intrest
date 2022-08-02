@@ -1,10 +1,11 @@
 import { Button } from '@/components/button';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function ProfileHeader() {
   return (
     <div className="flex items-center gap-8">
-      <div className="max-w-[120px] aspect-square relative w-full rounded-full border overflow-hidden">
+      <div className="flex-shrink-0 flex-grow-0 w-[120px] h-[120px] relative rounded-full border overflow-hidden">
         <Image
           src="/assets/images/no-profile.jpg"
           layout="fill"
@@ -14,7 +15,9 @@ export default function ProfileHeader() {
       </div>
       <div className="flex flex-col gap-3">
         <div className="flex items-center gap-5">
-          <h2 className="text-2xl font-medium text-dark-1">ichsnn</h2>
+          <Link href="/user/[username]" as={`/user/${'ichsnn'}`}>
+            <a className="text-2xl font-medium text-dark-1">ichsnn</a>
+          </Link>
           <Button className={'border-dark-4 text-dark-4 px-2 py-1'}>
             Edit Profile
           </Button>

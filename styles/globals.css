@@ -4,10 +4,10 @@
 
 @layer base {
   html {
-    @apply font-poppins;
+    @apply font-poppins scroll-smooth;
   }
 }
 
 .container {
-  @apply p-10 mx-auto;
+  @apply px-10 mx-auto;
 }
