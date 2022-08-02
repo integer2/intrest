@@ -10,6 +10,8 @@ import { toast } from 'react-toastify';
 import API from '@/services/api';
 import { LoadingNormal } from '@/components/loading-spinner';
 import useLoading from 'hooks/loading';
+import Cookies from 'js-cookie';
+import Router from 'next/router';
 
 const LoginModule = () => {
   const {
@@ -24,9 +26,9 @@ const LoginModule = () => {
     setLoading(true);
     try {
       const result = await API.post('/auth/login', data);
-      toast.success(result.data.message);
+      Cookies.set('token', result.data.token, { expires: 7 });
+      Router.push(routes.home);
     } catch (error) {
-      console.log(error);
       toast.error(error.response.data.message);
     } finally {
       setLoading(false);
