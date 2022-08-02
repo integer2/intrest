@@ -8,6 +8,8 @@ import formRegister from '@/utils/form-register';
 import routes from '@/libs/routes';
 import { toast } from 'react-toastify';
 import API from '@/services/api';
+import { LoadingNormal } from '@/components/loading-spinner';
+import useLoading from 'hooks/loading';
 
 const LoginModule = () => {
   const {
@@ -16,13 +18,18 @@ const LoginModule = () => {
     formState: { errors },
   } = useForm();
 
+  const [loading, setLoading] = useLoading(false);
+
   const onSubmit = async (data) => {
+    setLoading(true);
     try {
       const result = await API.post('/auth/login', data);
       toast.success(result.data.message);
     } catch (error) {
       console.log(error);
       toast.error(error.response.data.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -60,8 +67,14 @@ const LoginModule = () => {
           />
         </div>
         <div className="space-y-5">
-          <Button isPrimary isFull isRounded type={'submit'}>
-            Login
+          <Button
+            isPrimary
+            isFull
+            isRounded
+            isDisabled={loading}
+            type={'submit'}
+          >
+            {loading ? <LoadingNormal /> : 'Login'}
           </Button>
           <p className="text-gray-600 text-center">
             Don&#39;t have an account yet?{' '}

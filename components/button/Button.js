@@ -7,6 +7,7 @@ const Button = ({
   isFull,
   isRounded,
   className,
+  isDisabled,
   isLarge,
   type,
   onClick,
@@ -16,13 +17,14 @@ const Button = ({
       type={type}
       onClick={onClick}
       className={classNames(
-        'flex px-5 py-3 items-center justify-center font-medium hover:opacity-90 rounded-sm',
+        'flex px-5 py-3 items-center justify-center font-medium hover:opacity-90 rounded-sm active:opacity-80 disabled:bg-opacity-80 disabled:cursor-not-allowed',
         isPrimary && 'bg-purple-1 text-white',
         isFull && 'w-full',
         isRounded && 'rounded-full',
         isLarge && 'min-w-[110px]',
         className
       )}
+      disabled={isDisabled}
     >
       {children}
     </button>
