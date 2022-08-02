@@ -27,7 +27,7 @@ const LoginModule = () => {
     try {
       const result = await API.post('/auth/login', data);
       Cookies.set('token', result.data.token, { expires: 7 });
-      Router.push(routes.home);
+      Router.replace(routes.home)
     } catch (error) {
       toast.error(error.response.data.message);
     } finally {
