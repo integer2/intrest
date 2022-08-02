@@ -9,7 +9,7 @@ import routes from '@/libs/routes';
 import { toast } from 'react-toastify';
 import API from '@/services/api';
 import { LoadingNormal } from '@/components/loading-spinner';
-import useLoading from 'hooks/loading';
+import useLoading from 'hooks/useLoading';
 import Cookies from 'js-cookie';
 import Router from 'next/router';
 

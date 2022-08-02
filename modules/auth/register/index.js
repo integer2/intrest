@@ -8,7 +8,7 @@ import { FormInput } from '@/components/form-input';
 import formRegister from '@/utils/form-register';
 import API from '@/services/api';
 import { toast } from 'react-toastify';
-import useLoading from 'hooks/loading';
+import useLoading from 'hooks/useLoading';
 import { LoadingNormal } from '@/components/loading-spinner';
 
 const RegisterModule = () => {
