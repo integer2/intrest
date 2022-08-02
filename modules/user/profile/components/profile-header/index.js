@@ -14,7 +14,7 @@ export default function ProfileHeader() {
       </div>
       <div className="flex flex-col gap-3">
         <div className="flex items-center gap-5">
-          <h2 className="text-xl font-medium text-dark-1">ichsnn</h2>
+          <h2 className="text-2xl font-medium text-dark-1">ichsnn</h2>
           <Button className={'border-dark-4 text-dark-4 px-2 py-1'}>
             Edit Profile
           </Button>
