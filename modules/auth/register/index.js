@@ -27,6 +27,7 @@ const RegisterModule = () => {
       const result = await API.post('/auth/register', data);
       toast.success(result.data.message);
     } catch (error) {
+      console.log(error)
       toast.error(error.response.data.error);
     } finally {
       setLoading(false);

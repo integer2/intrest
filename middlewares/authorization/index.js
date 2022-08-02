@@ -11,7 +11,7 @@ export default function authorization(req, res) {
     if (authType !== 'Bearer')
       return res.status(401).json({ message: 'Unauthorized' });
 
-    return jwt.verify(authToken, 'secret', (err, decode) => {
+    return jwt.verify(authToken, process.env.JWT_SECRET, (err, decode) => {
       if (err) return res.status(401).json({ message: 'Unauthorized' });
 
       return resolve(decode);

@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // craete setup api with headers for authorization
 const API = axios.create({
-  baseURL: "/api/",
+  baseURL: process.env.API_URL,
   headers: {
     Authorization: `Bearer token`,
   },
