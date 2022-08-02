@@ -73,7 +73,6 @@ const LoginModule = () => {
           <Button
             isPrimary
             isFull
-            isRounded
             isDisabled={loading}
             type={'submit'}
           >

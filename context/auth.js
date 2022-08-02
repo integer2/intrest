@@ -22,7 +22,11 @@ export const AuthProvider = ({ children }) => {
     setIsAuthenticated(true);
   };
 
-  const logout = () => {};
+  const logout = () => {
+    setIsAuthenticated(false);
+    setUser(null);
+    Cookies.remove('token');
+  };
 
   const getUser = async () => {
     try {

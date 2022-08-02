@@ -2,14 +2,24 @@ import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react';
 import { UserCircleIcon, LogoutIcon } from '@heroicons/react/outline';
 import Link from 'next/link';
+import { useAuth } from 'context/auth';
+import Router from 'next/router';
+import routes from '@/libs/routes';
 
-const ProfileButton = ({ user }) => {
+const ProfileButton = () => {
+  const {user, logout} = useAuth();
+
   const [showDropdown, setShowDropdown] = useState(false);
   const profileDropdown = useRef();
 
   const toggleDropdown = (e) => {
     setShowDropdown(!showDropdown);
   };
+
+  const handleLogout = () => {
+    logout();
+    Router.replace(routes.login);
+  }
 
 
   return (
@@ -40,6 +50,7 @@ const ProfileButton = ({ user }) => {
             <button
               className="flex items-center w-full py-2 px-4 gap-2 hover:bg-gray-6"
               type="button"
+              onClick={handleLogout}
             >
               <LogoutIcon className="h-5 w-5" />
               <div>Logout</div>
