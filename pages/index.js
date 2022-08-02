@@ -1,14 +1,12 @@
 import { MainLayout } from '@/components/layout';
-import React from 'react';
-import Sidebar from '@/components/sidebar';
-import Navbar from '@/components/navbar';
+import useAuth from 'hooks/useAuth';
 
 const HomePage = () => {
+  const auth = useAuth()
+
   return (
     <div>
-      <MainLayout>
-
-      </MainLayout>
+      <MainLayout></MainLayout>
     </div>
   );
 };

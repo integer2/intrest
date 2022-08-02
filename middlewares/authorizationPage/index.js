@@ -23,7 +23,7 @@ export const authPage = (ctx) => {
         Location: routes.login,
       });
       ctx.res.end();
-      resolve('unauthorized');
+      return resolve('unauthorized');
     }
     return resolve({ token: cookies.token });
   });

@@ -1,10 +1,11 @@
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 // craete setup api with headers for authorization
 const API = axios.create({
-  baseURL: process.env.API_URL,
+  baseURL: 'http://localhost:3000/api/',
   headers: {
-    Authorization: `Bearer token`,
+    Authorization: `Bearer ${Cookies.get('token') || ''}`,
   },
 });
 

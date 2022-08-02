@@ -56,11 +56,22 @@ class DbConnection {
 
   async createPost(authod_id, img_url, desc) {
     const connection = await this.getConnection();
-    const [result] = await connection.query(
-      `CALL createPost(?, ?, ?)`, [authod_id, img_url, desc]
-    );
+    const [result] = await connection.query(`CALL createPost(?, ?, ?)`, [
+      authod_id,
+      img_url,
+      desc,
+    ]);
 
     return result;
+  }
+
+  async getUser(user_id, email) {
+    const connection = await this.getConnection();
+    const [result] = await connection.query(`CALL getUser(?, ?)`, [
+      user_id,
+      email,
+    ]);
+    return result[0][0];
   }
 }
 
