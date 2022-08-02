@@ -1,6 +1,6 @@
 export const NavbarSkeleton = () => {
   return (
-    <div className="flex py-7 px-10 gap-7 justify-between items-center">
+    <div className="flex container py-7 px-10 gap-7 justify-between items-center">
       <div className="flex-1">
         <div className="h-12 bg-gray-300 max-w-[713px] rounded-md animate-pulse"></div>
       </div>

@@ -15,7 +15,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="flex py-7 px-10 gap-7 justify-between items-center">
+    <div className="flex gap-7 justify-between items-center container py-7 px-10">
       <div className="flex-1">
         <SearchInput onSubmit={searchSubmit} />
       </div>
