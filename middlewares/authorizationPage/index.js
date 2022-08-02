@@ -23,6 +23,6 @@ export const authPage = (ctx) => {
       });
       ctx.res.end();
     }
-    return resolve('authorized');
+    return resolve({token: cookies.token});
   });
 }
