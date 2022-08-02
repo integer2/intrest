@@ -1,12 +1,15 @@
-import { MainLayout } from '@/components/layout'
-import React from 'react'
+import { MainLayout } from '@/components/layout';
+import UserProfileModule from '@/modules/user/profile';
+import React from 'react';
 
 const Username = () => {
   return (
     <div>
-      <MainLayout />
+      <MainLayout>
+        <UserProfileModule />
+      </MainLayout>
     </div>
-  )
-}
+  );
+};
 
-export default Username
+export default Username;

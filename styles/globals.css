@@ -9,5 +9,5 @@
 }
 
 .container {
-  @apply p-10;
+  @apply p-10 mx-auto;
 }
