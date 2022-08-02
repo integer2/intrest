@@ -7,7 +7,7 @@ import Router from 'next/router';
 import routes from '@/libs/routes';
 
 const ProfileButton = () => {
-  const {user, logout} = useAuth();
+  const { user, logout } = useAuth();
 
   const [showDropdown, setShowDropdown] = useState(false);
   const profileDropdown = useRef();
@@ -19,8 +19,21 @@ const ProfileButton = () => {
   const handleLogout = () => {
     logout();
     Router.replace(routes.login);
-  }
+  };
 
+  useEffect(() => {
+    // Close dropdown if user clicks outside of it
+    const handleClickOutside = (e) => {
+      if (profileDropdown.current.contains(e.target)) {
+        return;
+      }
+      setShowDropdown(false);
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  });
 
   return (
     <div className="relative" ref={profileDropdown} onClick={toggleDropdown}>
@@ -40,7 +53,7 @@ const ProfileButton = () => {
         <div className="absolute z-50 right-0 top-full mt-2 flex flex-col divide-y-2 min-w-[200px] bg-white shadow-md text-dark-4 rounded-md">
           <div>
             <Link href={'/user/[username]'} as={`/user/${user.username}`}>
-              <a className="flex items-center w-full py-2 px-4 gap-2 hover:bg-gray-6">
+              <a className="flex items-center w-full py-2 px-4 gap-2 hover:bg-gray-100">
                 <UserCircleIcon className="h-5 w-5" />
                 <div>Profile</div>
               </a>
@@ -48,7 +61,7 @@ const ProfileButton = () => {
           </div>
           <div>
             <button
-              className="flex items-center w-full py-2 px-4 gap-2 hover:bg-gray-6"
+              className="flex items-center w-full py-2 px-4 gap-2 hover:bg-gray-100"
               type="button"
               onClick={handleLogout}
             >
