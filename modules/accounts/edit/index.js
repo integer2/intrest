@@ -8,7 +8,7 @@ import EditProfileForm from './components/edit-profile-form';
 import { useNewImage } from './hooks';
 
 const EditAccountsModule = () => {
-  const { user } = useAuth();
+  const { user, getUser, setLoading } = useAuth();
 
   const { setNewImage, newImage } = useNewImage();
 
@@ -39,10 +39,11 @@ const EditAccountsModule = () => {
     formData.append('current_img_url', data.img_url);
     formData.append('file', newImage);
     try {
-      const result = await API().post('/accounts/edit-profile', formData);
-      console.log(result);
+      await API().post('/accounts/edit-profile', formData);
+      await getUser();
+      toast.success('Your account has been updated');
     } catch (error) {
-      console.log(error);
+      toast.error('Something went wrong');
     }
   };
 

@@ -1,6 +1,4 @@
-import ModalLayer from '@/components/modal-layer';
 import API from '@/services/api';
-import { ModalContainer } from 'hooks/useModal';
 import Cookies from 'js-cookie';
 import { createContext, useContext, useEffect, useState } from 'react';
 
@@ -11,6 +9,7 @@ export const AuthContext = createContext({
   setLoading: () => {},
   login: Promise,
   logout: () => {},
+  getUser: Promise,
 });
 
 export const AuthProvider = ({ children }) => {
@@ -58,7 +57,15 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ user, isAuthenticated, login, logout, loading, setLoading }}
+      value={{
+        user,
+        isAuthenticated,
+        login,
+        logout,
+        loading,
+        setLoading,
+        getUser,
+      }}
     >
       {children}
     </AuthContext.Provider>

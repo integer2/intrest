@@ -40,14 +40,11 @@ const ProfileButton = () => {
       <button className="flex gap-5 items-center">
         <div className="relative h-[50px] w-[50px] rounded-full overflow-hidden shadow-button">
           <Image
-            src={'/assets/images/no-profile.jpg'}
+            src={user.img_url || '/assets/images/no-profile.jpg'}
             layout="fill"
             alt="profile"
           />
         </div>
-        {/* <p className="font-medium min-w-[8ch] max-w-[8ch] whitespace-nowrap overflow-hidden text-ellipsis">
-          {username}
-        </p> */}
       </button>
       {showDropdown && (
         <div className="absolute z-50 right-0 top-full mt-2 flex flex-col divide-y-2 min-w-[200px] bg-white shadow-md text-dark-4 rounded-md">

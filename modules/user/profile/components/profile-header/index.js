@@ -1,13 +1,16 @@
 import { Button } from '@/components/button';
+import { useAuth } from 'context/auth';
 import Image from 'next/image';
 import Link from 'next/link';
 
 export default function ProfileHeader() {
+  const { user } = useAuth();
+
   return (
     <div className="flex items-center gap-8">
       <div className="flex-shrink-0 flex-grow-0 w-[120px] h-[120px] relative rounded-full border overflow-hidden">
         <Image
-          src="/assets/images/no-profile.jpg"
+          src={user?.img_url || '/assets/images/no-profile.jpg'}
           layout="fill"
           objectFit="cover"
           alt="user-profile"
@@ -16,7 +19,7 @@ export default function ProfileHeader() {
       <div className="flex flex-col gap-3">
         <div className="flex items-center gap-5">
           <Link href="/user/[username]" as={`/user/${'ichsnn'}`}>
-            <a className="text-2xl font-medium text-dark-1">ichsnn</a>
+            <a className="text-2xl font-medium text-dark-1">{user?.username}</a>
           </Link>
           <Link href={'/accounts/edit'}>
             <a>
