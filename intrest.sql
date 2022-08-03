@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 01, 2022 at 04:41 PM
+-- Generation Time: Aug 03, 2022 at 05:55 AM
 -- Server version: 10.4.20-MariaDB
 -- PHP Version: 8.0.9
 
@@ -40,6 +40,14 @@ END$$
 
 CREATE DEFINER=`intrest`@`localhost` PROCEDURE `createNewUserProfile` (IN `in_user_id` INT)  BEGIN
   INSERT INTO user_profile (id) VALUES (in_user_id);
+END$$
+
+CREATE DEFINER=`intrest`@`localhost` PROCEDURE `createPost` (IN `in_author_id` INT, IN `in_img_url` VARCHAR(255), IN `in_desc` TEXT)  BEGIN
+  INSERT INTO post (author_id, img_url, `desc`) VALUES (in_author_id, in_img_url, in_desc);
+END$$
+
+CREATE DEFINER=`intrest`@`localhost` PROCEDURE `getUserInfo` (IN `in_user_id` INT, IN `in_email` VARCHAR(24))  BEGIN
+  SELECT * FROM user_info;
 END$$
 
 CREATE DEFINER=`intrest`@`localhost` PROCEDURE `loginUser` (IN `in_email` VARCHAR(24), IN `in_password` VARCHAR(16))  BEGIN
@@ -99,11 +107,47 @@ CREATE TABLE `comment` (
 -- --------------------------------------------------------
 
 --
+-- Stand-in structure for view `counter_followed`
+-- (See below for the actual view)
+--
+CREATE TABLE `counter_followed` (
+`id` int(11)
+,`username` varchar(24)
+,`total_followed` bigint(21)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `counter_follower`
+-- (See below for the actual view)
+--
+CREATE TABLE `counter_follower` (
+`id` int(11)
+,`username` varchar(24)
+,`total_follower` bigint(21)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `counter_subscription`
+-- (See below for the actual view)
+--
+CREATE TABLE `counter_subscription` (
+`id` int(11)
+,`username` varchar(24)
+,`total_followed` bigint(21)
+,`total_follower` bigint(21)
+);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `follower`
 --
 
 CREATE TABLE `follower` (
-  `id` int(11) NOT NULL,
   `follower_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `created_at` datetime DEFAULT current_timestamp()
@@ -164,6 +208,38 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
+-- Stand-in structure for view `user_info`
+-- (See below for the actual view)
+--
+CREATE TABLE `user_info` (
+`id` int(11)
+,`email` varchar(24)
+,`username` varchar(24)
+,`name` varchar(30)
+,`birthday` date
+,`gender` enum('male','female','unknown','')
+,`bio` varchar(150)
+,`img_url` varchar(255)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `user_post`
+-- (See below for the actual view)
+--
+CREATE TABLE `user_post` (
+`username` varchar(24)
+,`id` int(11)
+,`img_url` varchar(255)
+,`desc` text
+,`created_at` datetime
+,`updated_at` datetime
+);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `user_profile`
 --
 
@@ -171,9 +247,55 @@ CREATE TABLE `user_profile` (
   `id` int(11) NOT NULL,
   `name` varchar(30) DEFAULT NULL,
   `birthday` date DEFAULT NULL,
+  `gender` enum('male','female','unknown','') NOT NULL DEFAULT 'unknown',
   `bio` varchar(150) DEFAULT NULL,
   `img_url` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `counter_followed`
+--
+DROP TABLE IF EXISTS `counter_followed`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `counter_followed`  AS SELECT `user`.`id` AS `id`, `user`.`username` AS `username`, count(distinct `f`.`user_id`) AS `total_followed` FROM (`user` left join `follower` `f` on(`user`.`id` = `f`.`follower_id`)) GROUP BY `user`.`id` ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `counter_follower`
+--
+DROP TABLE IF EXISTS `counter_follower`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `counter_follower`  AS SELECT `user`.`id` AS `id`, `user`.`username` AS `username`, count(distinct `f`.`follower_id`) AS `total_follower` FROM (`user` left join `follower` `f` on(`user`.`id` = `f`.`user_id`)) GROUP BY `user`.`id` ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `counter_subscription`
+--
+DROP TABLE IF EXISTS `counter_subscription`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `counter_subscription`  AS SELECT `counter_followed`.`id` AS `id`, `counter_followed`.`username` AS `username`, `counter_followed`.`total_followed` AS `total_followed`, `counter_follower`.`total_follower` AS `total_follower` FROM (`counter_followed` join `counter_follower` on(`counter_followed`.`id` = `counter_follower`.`id` and `counter_followed`.`username` = `counter_follower`.`username`)) ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `user_info`
+--
+DROP TABLE IF EXISTS `user_info`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `user_info`  AS SELECT `user`.`id` AS `id`, `user`.`email` AS `email`, `user`.`username` AS `username`, `user_profile`.`name` AS `name`, `user_profile`.`birthday` AS `birthday`, `user_profile`.`gender` AS `gender`, `user_profile`.`bio` AS `bio`, `user_profile`.`img_url` AS `img_url` FROM (`user` join `user_profile` on(`user`.`id` = `user_profile`.`id`)) ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `user_post`
+--
+DROP TABLE IF EXISTS `user_post`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `user_post`  AS SELECT `user`.`username` AS `username`, `post`.`id` AS `id`, `post`.`img_url` AS `img_url`, `post`.`desc` AS `desc`, `post`.`created_at` AS `created_at`, `post`.`updated_at` AS `updated_at` FROM (`user` join `post`) WHERE `user`.`id` = `post`.`author_id` ;
 
 --
 -- Indexes for dumped tables
@@ -183,15 +305,14 @@ CREATE TABLE `user_profile` (
 -- Indexes for table `comment`
 --
 ALTER TABLE `comment`
-  ADD KEY `comment` (`user_id`),
-  ADD KEY `comment_post_id_fk` (`post_id`);
+  ADD KEY `comment_post_id_fk` (`post_id`),
+  ADD KEY `comment` (`user_id`);
 
 --
 -- Indexes for table `follower`
 --
 ALTER TABLE `follower`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `follower_user_profile_id_fk` (`follower_id`),
+  ADD KEY `follower_user_id_fk` (`follower_id`),
   ADD KEY `followed_user_profile_id_fk` (`user_id`);
 
 --
@@ -199,7 +320,7 @@ ALTER TABLE `follower`
 --
 ALTER TABLE `like`
   ADD KEY `like_post_id_fk` (`post_id`),
-  ADD KEY `like_user_profile_id_fk` (`user_id`);
+  ADD KEY `like_user_id_fk` (`user_id`);
 
 --
 -- Indexes for table `post`
@@ -227,12 +348,6 @@ ALTER TABLE `user_profile`
 --
 
 --
--- AUTO_INCREMENT for table `follower`
---
-ALTER TABLE `follower`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `post`
 --
 ALTER TABLE `post`
@@ -252,28 +367,28 @@ ALTER TABLE `user`
 -- Constraints for table `comment`
 --
 ALTER TABLE `comment`
-  ADD CONSTRAINT `comment` FOREIGN KEY (`user_id`) REFERENCES `user_profile` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `comment` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `comment_post_id_fk` FOREIGN KEY (`post_id`) REFERENCES `post` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `follower`
 --
 ALTER TABLE `follower`
-  ADD CONSTRAINT `followed_user_profile_id_fk` FOREIGN KEY (`user_id`) REFERENCES `user_profile` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `follower_user_profile_id_fk` FOREIGN KEY (`follower_id`) REFERENCES `user_profile` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `followed_user_profile_id_fk` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `follower_user_id_fk` FOREIGN KEY (`follower_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `like`
 --
 ALTER TABLE `like`
   ADD CONSTRAINT `like_post_id_fk` FOREIGN KEY (`post_id`) REFERENCES `post` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `like_user_profile_id_fk` FOREIGN KEY (`user_id`) REFERENCES `user_profile` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `like_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `post`
 --
 ALTER TABLE `post`
-  ADD CONSTRAINT `post` FOREIGN KEY (`author_id`) REFERENCES `user_profile` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `post` FOREIGN KEY (`author_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `user_profile`
