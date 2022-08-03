@@ -8,7 +8,7 @@ import EditProfileForm from './components/edit-profile-form';
 import { useNewImage } from './hooks';
 
 const EditAccountsModule = () => {
-  const { user, getUser, setLoading } = useAuth();
+  const { user, getUser } = useAuth();
 
   const { setNewImage, newImage } = useNewImage();
 
