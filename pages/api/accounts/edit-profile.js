@@ -40,6 +40,13 @@ export default async function handler(req, res) {
         throw error;
       });
 
+    if (img_url !== current_img_url) {
+      if (img_url) {
+        const oldPath = `./public${current_img_url}`;
+        await deleteFile(oldPath);
+      }
+    }
+
     res.status(200).json({ message: 'Edit Profile' });
   } catch (error) {
     console.error(error);
