@@ -14,7 +14,7 @@ const EditImage = () => {
       </div>
       <label
         htmlFor="edit-image"
-        className="flex gap-1 absolute -right-4 bottom-4 rounded-md border px-2 py-1 bg-white border-purple-1 text-purple-1 text-sm font-medium items-center"
+        className="flex gap-1 absolute -right-4 bottom-4 rounded-md border px-2 py-1 bg-white border-purple-1 text-purple-1 text-sm font-medium items-center cursor-pointer"
       >
         <PencilIcon className="h-4 w-4" />
         Edit

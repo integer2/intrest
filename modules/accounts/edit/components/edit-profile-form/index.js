@@ -1,10 +1,9 @@
 import { Button } from '@/components/button';
 import { FormInput, FormText } from '@/components/form-input';
-import { ModalContext, modalRef, useModal } from 'hooks/useModal';
-import React, { useContext, useEffect, useState } from 'react';
+import { useModal } from 'hooks/useModal';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import SelectGender from '../select-gender';
-import ModalLayer from '@/components/modal-layer';
 
 const EditProfileForm = ({ onSubmit, user }) => {
   const {
