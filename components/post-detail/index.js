@@ -3,8 +3,10 @@ import React from 'react';
 import { Button } from '../button';
 import { UserAddIcon } from '@heroicons/react/outline';
 import { ChatAltIcon } from '@heroicons/react/solid';
+import { useAuth } from 'context/auth';
 
 const PostDetail = ({ post }) => {
+  const { user } = useAuth();
   return (
     <div className="h-[490px] bg-white flex items-center p-5 gap-14 w-full relative rounded-lg">
       <div className="max-w-[450px] max-h-[450px] aspect-square relative h-full w-full flex-1">
@@ -28,10 +30,12 @@ const PostDetail = ({ post }) => {
             </div>
             {post?.username}
           </div>
-          <Button isPrimary isSmall className={'gap-2 rounded-md px-3 py-2'}>
-            <UserAddIcon className="h-5 w-5" />
-            Follow
-          </Button>
+          {user?.username !== post?.username && (
+            <Button isPrimary isSmall className={'gap-2 rounded-md px-3 py-2'}>
+              <UserAddIcon className="h-5 w-5" />
+              Follow
+            </Button>
+          )}
         </div>
         <p className="text-lg py-4">
           <span className="font-semibold">{post?.username}</span>{' '}
