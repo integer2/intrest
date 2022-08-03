@@ -1,9 +1,21 @@
+import { useModal } from 'hooks/useModal';
 import Image from 'next/image';
 import React from 'react';
+import PostDetail from '../post-detail';
 
-const ImageCard = ({post}) => {
+const ImageCard = ({ post }) => {
+  const modal = useModal();
+
+  const handleOnClick = (e) => {
+    modal.setIsOpen(true);
+    modal.setContent(<PostDetail post={post}/>)
+  };
+
   return (
-    <div className="aspect-square w-full relative cursor-pointer" onClick={() => {console.log(post)}}>
+    <div
+      className="aspect-square w-full relative cursor-pointer"
+      onClick={handleOnClick}
+    >
       <Image
         src={post?.post_img || '/assets/images/image-not-found.png'}
         layout={'fill'}

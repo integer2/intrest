@@ -53,7 +53,7 @@ const UserProfileModule = () => {
           <div>
             <ImageContainer>
               {post?.map((data, index) => {
-                return <ImageCard key={index} post={post} />;
+                return <ImageCard key={index} post={data} />;
               }) || 'No Post'}
             </ImageContainer>
           </div>
