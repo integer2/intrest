@@ -1,12 +1,34 @@
 import { useAuth } from 'context/auth';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import EditImage from './components/edit-image';
 import EditPasswordFrom from './components/edit-password-form';
 import EditProfileForm from './components/edit-profile-form';
+import { useNewImage } from './hooks';
 
 const EditAccountsModule = () => {
   const { user } = useAuth();
+
+  const { setNewImage, newImage } = useNewImage();
+
+  const [imgUrl, setImageUrl] = useState(user.img_url);
+
+  const onEditImage = (e) => {
+    if (e.target.files[0]) {
+      // check file size
+      if (e.target.files[0].size > 1000000) {
+        toast.error('Image size must be less than 1MB');
+        return;
+      }
+      const image = e.target.files[0];
+      setNewImage(image);
+      const newImageUrl = URL.createObjectURL(image);
+      setImageUrl(newImageUrl);
+    }
+  };
+
   const submitEditProfile = (data) => {
+    console.log(newImage);
     console.log(data);
   };
 
@@ -24,7 +46,7 @@ const EditAccountsModule = () => {
           <h3 className="mb-4 font-medium text-dark-1 text-center">
             Profile Picture
           </h3>
-          <EditImage img_url={user.img_url} />
+          <EditImage img_url={imgUrl} onEdit={onEditImage} />
         </div>
         <div className="flex-1">
           <EditProfileForm onSubmit={submitEditProfile} user={user} />

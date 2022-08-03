@@ -1,7 +1,7 @@
 import { Button } from '@/components/button';
 import { FormInput, FormText } from '@/components/form-input';
 import { useModal } from 'hooks/useModal';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import SelectGender from '../select-gender';
 
@@ -63,6 +63,7 @@ const EditProfileForm = ({ onSubmit, user }) => {
           type={'date'}
           label={'birthday'}
           isFull
+          register={register('birthday')}
           error={errors.birthday}
         />
         <FormInput

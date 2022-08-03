@@ -2,14 +2,15 @@ import { PencilIcon } from '@heroicons/react/solid';
 import Image from 'next/image';
 import React from 'react';
 
-const EditImage = () => {
+const EditImage = ({ img_url, onEdit }) => {
   return (
     <div className="relative">
-      <div className="h-[150px] w-[150px] relative rounded-full overflow-hidden">
+      <div className="h-[150px] w-[150px] relative rounded-full overflow-hidden border-2">
         <Image
-          src={'/assets/images/no-profile.jpg'}
+          src={img_url || '/assets/images/no-profile.jpg'}
           layout="fill"
           alt="user-image"
+          objectFit="cover"
         />
       </div>
       <label
@@ -24,6 +25,7 @@ const EditImage = () => {
         id="edit-image"
         accept="image/jpeg, image/png, image/webp"
         className="sr-only"
+        onChange={onEdit}
       />
     </div>
   );
