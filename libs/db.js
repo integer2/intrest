@@ -67,7 +67,7 @@ class DbConnection {
 
   async getUser(user_id, email) {
     const connection = await this.getConnection();
-    const [result] = await connection.query(`CALL getUser(?, ?)`, [
+    const [result] = await connection.query(`CALL getUserInfo(?, ?)`, [
       user_id,
       email,
     ]);
