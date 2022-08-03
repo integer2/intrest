@@ -1,11 +1,11 @@
 import Image from 'next/image';
 import React from 'react';
 
-const ImageCard = () => {
+const ImageCard = ({post}) => {
   return (
-    <div className="aspect-square w-full relative cursor-pointer">
+    <div className="aspect-square w-full relative cursor-pointer" onClick={() => {console.log(post)}}>
       <Image
-        src={'/assets/images/no-profile.jpg'}
+        src={post?.post_img || '/assets/images/image-not-found.png'}
         layout={'fill'}
         objectFit="cover"
         alt="image"

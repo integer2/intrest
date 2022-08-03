@@ -101,6 +101,15 @@ class DbConnection {
 
     return result;
   }
+
+  async getAllPostByUser(username) {
+    const connection = await this.getConnection();
+    const [result] = await connection.execute(
+      'SELECT * FROM all_post WHERE username = ?',
+      [username]
+    );
+    return result;
+  }
 }
 
 const db = new DbConnection();
