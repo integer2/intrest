@@ -19,12 +19,15 @@ export default function ProfileHeader() {
             <a className="text-2xl font-medium text-dark-1">ichsnn</a>
           </Link>
           <Link href={'/accounts/edit'}>
-            <Button
-              className={'border-dark-4 text-dark-4 px-2 py-1'}
-              type={'button'}
-            >
-              Edit Profile
-            </Button>
+            <a>
+              <Button
+                type={'button'}
+                className={'border-dark-4 text-dark-4'}
+                isSmall
+              >
+                Edit Profile
+              </Button>
+            </a>
           </Link>
         </div>
         <div className="flex gap-5 text-purple-1 font-medium">

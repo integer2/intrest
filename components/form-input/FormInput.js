@@ -13,6 +13,10 @@ const FormInput = ({
   isFull,
   type,
   error,
+  onClick,
+  isDisabled,
+  isButton,
+  value,
 }) => {
   return (
     <div className={classNames(isBlock && inputStyle.inputBlock, 'space-y-1')}>
@@ -27,15 +31,18 @@ const FormInput = ({
           {label}
         </label>
       )}
-      <div className='relative'>
+      <div className="relative" onClick={onClick}>
         <input
+          value={value}
           type={type}
           id={id}
           className={classNames(
-            'rounded-sm p-3 border border-gray-300 focus:outline-purple-1 focus:outline-8 text-gray-600',
+            'rounded-sm p-3 border border-gray-300 focus:outline-purple-1 focus:outline-8 text-gray-600 disabled:bg-inherit',
             isFull && 'w-full',
-            error && 'border-red-600'
+            error && 'border-red-600',
+            isButton && 'cursor-pointer'
           )}
+          disabled={isDisabled}
           placeholder={placeholder}
           {...register}
         />

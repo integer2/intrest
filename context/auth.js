@@ -1,4 +1,6 @@
+import ModalLayer from '@/components/modal-layer';
 import API from '@/services/api';
+import { ModalContainer } from 'hooks/useModal';
 import Cookies from 'js-cookie';
 import { createContext, useContext, useEffect, useState } from 'react';
 
@@ -31,10 +33,11 @@ export const AuthProvider = ({ children }) => {
   const getUser = async () => {
     try {
       const { data } = await API().post('/auth/user');
-      console.log(data);
       setUser(data);
       setIsAuthenticated(true);
-    } catch (error) {}
+    } catch (error) {
+      Cookies.remove('token');
+    }
   };
 
   useEffect(() => {
