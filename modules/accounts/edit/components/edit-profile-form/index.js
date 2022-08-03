@@ -1,5 +1,6 @@
 import { Button } from '@/components/button';
 import { FormInput, FormText } from '@/components/form-input';
+import formRegister from '@/utils/form-register';
 import { useModal } from 'hooks/useModal';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -11,7 +12,7 @@ const EditProfileForm = ({ onSubmit, user }) => {
     handleSubmit,
     setValue,
     getValues,
-    formState: errors,
+    formState: { errors },
   } = useForm({
     defaultValues: {
       name: user.name,
@@ -55,7 +56,7 @@ const EditProfileForm = ({ onSubmit, user }) => {
           label={'username'}
           isFull
           isRequired
-          register={register('username')}
+          register={formRegister.username(register)}
           error={errors.username}
         />
         <FormText label={'bio'} isFull register={register('bio')} />
@@ -81,7 +82,7 @@ const EditProfileForm = ({ onSubmit, user }) => {
           label={'email'}
           isFull
           isRequired
-          register={register('email')}
+          register={formRegister.email(register)}
           error={errors.email}
         />
         <div>
