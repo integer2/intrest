@@ -21,6 +21,7 @@ const EditProfileForm = ({ onSubmit, user }) => {
       birthday: user.birthday,
       gender: user.gender,
       email: user.email,
+      img_url: user.img_url,
     },
   });
 

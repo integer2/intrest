@@ -1,3 +1,4 @@
+import API from '@/services/api';
 import { useAuth } from 'context/auth';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
@@ -27,9 +28,22 @@ const EditAccountsModule = () => {
     }
   };
 
-  const submitEditProfile = (data) => {
-    console.log(newImage);
-    console.log(data);
+  const submitEditProfile = async (data) => {
+    const formData = new FormData();
+    formData.append('name', data.name);
+    formData.append('username', data.username);
+    formData.append('bio', data.bio);
+    formData.append('birthday', data.birthday);
+    formData.append('gender', data.gender);
+    formData.append('email', data.email);
+    formData.append('current_img_url', data.img_url);
+    formData.append('file', newImage);
+    try {
+      const result = await API().post('/accounts/edit-profile', formData);
+      console.log(result);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const submitEditPassword = (data) => {

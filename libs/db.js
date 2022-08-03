@@ -73,6 +73,24 @@ class DbConnection {
     ]);
     return result[0][0];
   }
+
+  async updateUserInfo(
+    user_id,
+    email,
+    username,
+    name,
+    birthday,
+    gender,
+    bio,
+    img_url
+  ) {
+    const connection = await this.getConnection();
+    const [result] = await connection.query(
+      'CALL updateUserInfo(?, ?, ?, ?, ?, ?, ?, ?)',
+      [user_id, email, username, name, birthday, gender, bio, img_url]
+    );
+    return result;
+  }
 }
 
 const db = new DbConnection();
