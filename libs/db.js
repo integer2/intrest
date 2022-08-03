@@ -91,6 +91,16 @@ class DbConnection {
     );
     return result;
   }
+
+  async getUserProfile(username) {
+    const connection = await this.getConnection();
+    const [result] = await connection.execute(
+      'SELECT * FROM profile_info WHERE username = ?',
+      [username]
+    );
+
+    return result;
+  }
 }
 
 const db = new DbConnection();
