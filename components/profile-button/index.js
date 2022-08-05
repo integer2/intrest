@@ -43,6 +43,7 @@ const ProfileButton = () => {
             src={user.img_url || '/assets/images/no-profile.jpg'}
             layout="fill"
             alt="profile"
+            objectFit="cover"
           />
         </div>
       </button>
