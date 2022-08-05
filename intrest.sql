@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 03, 2022 at 05:55 AM
+-- Generation Time: Aug 05, 2022 at 09:34 AM
 -- Server version: 10.4.20-MariaDB
 -- PHP Version: 8.0.9
 
@@ -47,7 +47,7 @@ CREATE DEFINER=`intrest`@`localhost` PROCEDURE `createPost` (IN `in_author_id` I
 END$$
 
 CREATE DEFINER=`intrest`@`localhost` PROCEDURE `getUserInfo` (IN `in_user_id` INT, IN `in_email` VARCHAR(24))  BEGIN
-  SELECT * FROM user_info;
+  SELECT * FROM user_info WHERE id = in_user_id AND email = in_email;
 END$$
 
 CREATE DEFINER=`intrest`@`localhost` PROCEDURE `loginUser` (IN `in_email` VARCHAR(24), IN `in_password` VARCHAR(16))  BEGIN
@@ -56,6 +56,11 @@ CREATE DEFINER=`intrest`@`localhost` PROCEDURE `loginUser` (IN `in_email` VARCHA
   ELSE
     SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Email or password is incorrect';
   END IF;
+END$$
+
+CREATE DEFINER=`intrest`@`localhost` PROCEDURE `updateUserInfo` (IN `in_user_id` INT, IN `in_email` VARCHAR(24), IN `in_username` VARCHAR(24), IN `in_name` VARCHAR(30), IN `in_birthday` DATE, IN `in_gender` ENUM('male','female','unknown',''), IN `in_bio` TEXT, IN `in_img_url` VARCHAR(255))  BEGIN
+	UPDATE `user` SET email = in_email, username = in_username, updated_at = CURRENT_TIMESTAMP() WHERE id = in_user_id;
+    UPDATE `user_profile` SET name = in_name, birthday = in_birthday, gender = in_gender, bio = in_bio, img_url = in_img_url WHERE id = in_user_id;
 END$$
 
 --
@@ -79,6 +84,15 @@ CREATE DEFINER=`intrest`@`localhost` FUNCTION `isEmailValid` (`email` VARCHAR(24
   RETURN valid_email;
 END$$
 
+CREATE DEFINER=`intrest`@`localhost` FUNCTION `isFollowed` (`in_follower_id` INT, `in_user_id` INT) RETURNS TINYINT(1) BEGIN
+    DECLARE followed_value BOOLEAN;
+    SET followed_value = FALSE;
+    IF (SELECT COUNT(DISTINCT follower_id, user_id) FROM follower WHERE follower_id = in_follower_id AND user_id = in_user_id) = 1 THEN
+        SET followed_value = TRUE;
+    END IF;
+    RETURN followed_value;
+end$$
+
 CREATE DEFINER=`intrest`@`localhost` FUNCTION `isUsernameExist` (`in_username` VARCHAR(24)) RETURNS TINYINT(1) BEGIN
   DECLARE valid_username BOOLEAN;
   SET valid_username = FALSE;
@@ -89,6 +103,23 @@ CREATE DEFINER=`intrest`@`localhost` FUNCTION `isUsernameExist` (`in_username` V
 END$$
 
 DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `all_post`
+-- (See below for the actual view)
+--
+CREATE TABLE `all_post` (
+`user_id` int(11)
+,`username` varchar(24)
+,`profile_img` varchar(255)
+,`post_id` int(11)
+,`post_img` varchar(255)
+,`desc` text
+,`created_at` datetime
+,`updated_at` datetime
+);
 
 -- --------------------------------------------------------
 
@@ -126,6 +157,18 @@ CREATE TABLE `counter_follower` (
 `id` int(11)
 ,`username` varchar(24)
 ,`total_follower` bigint(21)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `counter_post`
+-- (See below for the actual view)
+--
+CREATE TABLE `counter_post` (
+`id` int(11)
+,`username` varchar(24)
+,`total_post` bigint(21)
 );
 
 -- --------------------------------------------------------
@@ -183,6 +226,22 @@ CREATE TABLE `post` (
 -- --------------------------------------------------------
 
 --
+-- Stand-in structure for view `profile_info`
+-- (See below for the actual view)
+--
+CREATE TABLE `profile_info` (
+`id` int(11)
+,`username` varchar(24)
+,`total_followed` bigint(21)
+,`total_follower` bigint(21)
+,`total_post` bigint(21)
+,`img_url` varchar(255)
+,`bio` text
+);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `user`
 --
 
@@ -218,7 +277,7 @@ CREATE TABLE `user_info` (
 ,`name` varchar(30)
 ,`birthday` date
 ,`gender` enum('male','female','unknown','')
-,`bio` varchar(150)
+,`bio` text
 ,`img_url` varchar(255)
 );
 
@@ -248,9 +307,18 @@ CREATE TABLE `user_profile` (
   `name` varchar(30) DEFAULT NULL,
   `birthday` date DEFAULT NULL,
   `gender` enum('male','female','unknown','') NOT NULL DEFAULT 'unknown',
-  `bio` varchar(150) DEFAULT NULL,
+  `bio` text DEFAULT NULL,
   `img_url` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `all_post`
+--
+DROP TABLE IF EXISTS `all_post`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `all_post`  AS SELECT `user_info`.`id` AS `user_id`, `user_info`.`username` AS `username`, `user_info`.`img_url` AS `profile_img`, `post`.`id` AS `post_id`, `post`.`img_url` AS `post_img`, `post`.`desc` AS `desc`, `post`.`created_at` AS `created_at`, `post`.`updated_at` AS `updated_at` FROM (`user_info` join `post` on(`user_info`.`id` = `post`.`author_id`)) ;
 
 -- --------------------------------------------------------
 
@@ -273,11 +341,29 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- --------------------------------------------------------
 
 --
+-- Structure for view `counter_post`
+--
+DROP TABLE IF EXISTS `counter_post`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `counter_post`  AS SELECT `user`.`id` AS `id`, `user`.`username` AS `username`, count(`post`.`author_id`) AS `total_post` FROM (`user` left join `post` on(`user`.`id` = `post`.`author_id`)) GROUP BY `user`.`id` ;
+
+-- --------------------------------------------------------
+
+--
 -- Structure for view `counter_subscription`
 --
 DROP TABLE IF EXISTS `counter_subscription`;
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `counter_subscription`  AS SELECT `counter_followed`.`id` AS `id`, `counter_followed`.`username` AS `username`, `counter_followed`.`total_followed` AS `total_followed`, `counter_follower`.`total_follower` AS `total_follower` FROM (`counter_followed` join `counter_follower` on(`counter_followed`.`id` = `counter_follower`.`id` and `counter_followed`.`username` = `counter_follower`.`username`)) ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `profile_info`
+--
+DROP TABLE IF EXISTS `profile_info`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `profile_info`  AS SELECT `counter`.`id` AS `id`, `counter`.`username` AS `username`, `counter`.`total_followed` AS `total_followed`, `counter`.`total_follower` AS `total_follower`, `counter`.`total_post` AS `total_post`, `user_info`.`img_url` AS `img_url`, `user_info`.`bio` AS `bio` FROM (`user_info` join (select `counter_subscription`.`id` AS `id`,`counter_subscription`.`username` AS `username`,`counter_subscription`.`total_followed` AS `total_followed`,`counter_subscription`.`total_follower` AS `total_follower`,`counter_post`.`total_post` AS `total_post` from (`counter_subscription` join `counter_post` on(`counter_subscription`.`id` = `counter_post`.`id` and `counter_subscription`.`username` = `counter_post`.`username`))) `counter` on(`user_info`.`id` = `counter`.`id` and `user_info`.`username` = `counter`.`username`)) ;
 
 -- --------------------------------------------------------
 

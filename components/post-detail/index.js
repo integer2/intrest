@@ -1,11 +1,14 @@
 import Image from 'next/image';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button } from '../button';
 import { useAuth } from 'context/auth';
 import SubscriptionButton from '../subscription-button';
+import { DotsHorizontalIcon } from '@heroicons/react/outline';
+import DotsButton from './DotsButton';
 
 const PostDetail = ({ post }) => {
   const { user } = useAuth();
+
   return (
     <div
       className="h-[490px] bg-white flex items-center p-5 gap-8 w-full max-w-6xl relative rounded-lg overflow-hidden"
@@ -24,18 +27,27 @@ const PostDetail = ({ post }) => {
         className="self-start flex-1 h-full flex flex-col w-full max-w-[500px] min-w-[600px] relative overflow-y-scroll"
       >
         <div className="sticky top-0 bg-white z-50 flex items-center justify-between w-full border-b pb-4">
-          <div className="flex gap-4 items-center font-medium text-lg">
-            <div className="h-10 w-10 relative rounded-full overflow-clip ">
-              <Image
-                src={post?.profile_img || '/assets/images/no-profile.jpg'}
-                alt={'alt'}
-                layout="fill"
-                objectFit="cover"
-              />
+          <div className="flex">
+            <div className="flex gap-4 items-center font-medium text-lg">
+              <div className="h-10 w-10 relative rounded-full overflow-clip ">
+                <Image
+                  src={post?.profile_img || '/assets/images/no-profile.jpg'}
+                  alt={'alt'}
+                  layout="fill"
+                  objectFit="cover"
+                />
+              </div>
+              {post?.username}
             </div>
-            {post?.username}
           </div>
-          {user?.username !== post?.username && <SubscriptionButton />}
+          {user?.username !== post?.username && (
+            <SubscriptionButton follower_id={user?.id} user_id={post?.id} />
+          )}
+          {post?.username === user.username && (
+            <>
+              <DotsButton post={post} />
+            </>
+          )}
         </div>
         <div className="text-base py-4 flex gap-2 scroll-smooth">
           <div className="relative h-8 w-8 inline-flex mr-2 shrink-0 rounded-full overflow-clip">
@@ -59,9 +71,7 @@ const PostDetail = ({ post }) => {
         </div>
         {/* Comments */}
         <section>
-          <div>
-
-          </div>
+          <div></div>
         </section>
         <div className="sticky bottom-0 mt-auto bg-white w-full pt-4 border-t">
           <form

@@ -8,6 +8,12 @@ export default async function handler(req, res) {
   }
   try {
     const { follower_id, user_id } = req.body;
+    if (!follower_id || !user_id) {
+      return res.status(400).json({
+        message: 'Missing required fields',
+      });
+    }
+
     const [result] = await db.checkIsFollowed(follower_id, user_id);
     res.status(200).json({
       ...result,
