@@ -10,7 +10,7 @@ const UserCard = ({ data }) => {
   };
   return (
     <div
-      className="flex flex-col bg-white items-center justify-center rounded-lg px-5 py-8 gap-5 cursor-pointer"
+      className="flex flex-col bg-white items-center justify-center rounded-lg px-5 py-8 gap-5 cursor-pointer shadow-sm"
       onClick={handleClick}
     >
       <div className="relative h-[100px] w-[100px] rounded-full overflow-clip">

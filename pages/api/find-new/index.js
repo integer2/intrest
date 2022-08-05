@@ -7,9 +7,7 @@ export default async function handler(req, res) {
   }
   try {
     const { id } = await authorization(req, res);
-
     const result = await db.getAllNotFollowed(id);
-    console.log(result);
     res.status(200).json(result);
   } catch (error) {
     console.log(error);
