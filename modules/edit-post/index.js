@@ -18,8 +18,6 @@ const EditPostModule = ({ post }) => {
     setIsOpen(false);
   };
 
-  console.log(post);
-
   const {
     register,
     handleSubmit,
@@ -32,11 +30,12 @@ const EditPostModule = ({ post }) => {
   });
 
   const editPost = async (data) => {
-    console.log(data);
     try {
-      // const result = await API().post('/post/create', formData);
-      // console.log(result);
-      toast.success('Post created successfully');
+      await API().post('/post/edit', {
+        id: post.post_id,
+        desc: data.desc,
+      });
+      toast.success('Post updated successfully');
       setIsOpen(false);
     } catch (error) {
       console.log(error);
