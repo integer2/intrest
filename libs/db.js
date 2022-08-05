@@ -21,7 +21,17 @@ class DbConnection {
   async getConnection() {
     if (this.connection) return this.connection;
 
-    this.connection = mysql.createPool({
+    // this.connection = mysql.createPool({
+    //   host: dbConfig.host,
+    //   user: dbConfig.user,
+    //   password: dbConfig.password,
+    //   database: dbConfig.database,
+    //   waitForConnections: true,
+    //   connectionLimit: 10,
+    //   queueLimit: 0,
+    // });
+
+    this.connection = mysql.createConnection({
       host: dbConfig.host,
       user: dbConfig.user,
       password: dbConfig.password,
@@ -50,7 +60,6 @@ class DbConnection {
     const [result] = await connection.query(
       `CALL loginUser('${email}', '${password}')`
     );
-
     return result[0][0];
   }
 
@@ -61,7 +70,6 @@ class DbConnection {
       img_url,
       desc,
     ]);
-
     return result;
   }
 
@@ -98,7 +106,6 @@ class DbConnection {
       'SELECT * FROM profile_info WHERE username = ?',
       [username]
     );
-
     return result;
   }
 
@@ -133,6 +140,12 @@ class DbConnection {
     const connection = await this.getConnection();
     const [result] = await connection.execute('CALL getPost(?)', [post_id]);
     return result[0][0];
+  }
+
+  async deletePost(post_id) {
+    const connection = await this.getConnection();
+    const [result] = await connection.execute('CALL deletePost(?)', [post_id]);
+    return result;
   }
 
   async getAllNotFollowed(user_id) {
