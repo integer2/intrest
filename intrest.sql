@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 05, 2022 at 09:34 AM
+-- Generation Time: Aug 05, 2022 at 04:39 PM
 -- Server version: 10.4.20-MariaDB
 -- PHP Version: 8.0.9
 
@@ -46,6 +46,18 @@ CREATE DEFINER=`intrest`@`localhost` PROCEDURE `createPost` (IN `in_author_id` I
   INSERT INTO post (author_id, img_url, `desc`) VALUES (in_author_id, in_img_url, in_desc);
 END$$
 
+CREATE DEFINER=`intrest`@`localhost` PROCEDURE `deletePost` (IN `in_post_id` INT)  BEGIN
+DELETE FROM post WHERE post.id = in_post_id;
+END$$
+
+CREATE DEFINER=`intrest`@`localhost` PROCEDURE `getAllNotFollowed` (IN `in_user_id` INT)  BEGIN
+    SELECT user_info.* FROM user_info JOIN user ON user_info.id = user.id WHERE user.id NOT IN (SELECT user_id FROM user JOIN follower WHERE user.id = follower.user_id AND follower_id = in_user_id AND follower.user_id) AND user.id <> in_user_id;
+END$$
+
+CREATE DEFINER=`intrest`@`localhost` PROCEDURE `getPost` (IN `in_post_id` INT)  BEGIN
+SELECT * FROM `user_post` WHERE id = in_post_id LIMIT 1;
+END$$
+
 CREATE DEFINER=`intrest`@`localhost` PROCEDURE `getUserInfo` (IN `in_user_id` INT, IN `in_email` VARCHAR(24))  BEGIN
   SELECT * FROM user_info WHERE id = in_user_id AND email = in_email;
 END$$
@@ -56,6 +68,10 @@ CREATE DEFINER=`intrest`@`localhost` PROCEDURE `loginUser` (IN `in_email` VARCHA
   ELSE
     SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Email or password is incorrect';
   END IF;
+END$$
+
+CREATE DEFINER=`intrest`@`localhost` PROCEDURE `updatePost` (IN `in_id` INT, IN `in_desc` TEXT)  BEGIN
+UPDATE post SET `post`.`desc` = in_desc, `post`.`updated_at`= now() WHERE `post`.`id` = in_id;
 END$$
 
 CREATE DEFINER=`intrest`@`localhost` PROCEDURE `updateUserInfo` (IN `in_user_id` INT, IN `in_email` VARCHAR(24), IN `in_username` VARCHAR(24), IN `in_name` VARCHAR(30), IN `in_birthday` DATE, IN `in_gender` ENUM('male','female','unknown',''), IN `in_bio` TEXT, IN `in_img_url` VARCHAR(255))  BEGIN
@@ -294,6 +310,7 @@ CREATE TABLE `user_post` (
 ,`desc` text
 ,`created_at` datetime
 ,`updated_at` datetime
+,`author_id` int(11)
 );
 
 -- --------------------------------------------------------
@@ -381,7 +398,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `user_post`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `user_post`  AS SELECT `user`.`username` AS `username`, `post`.`id` AS `id`, `post`.`img_url` AS `img_url`, `post`.`desc` AS `desc`, `post`.`created_at` AS `created_at`, `post`.`updated_at` AS `updated_at` FROM (`user` join `post`) WHERE `user`.`id` = `post`.`author_id` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `user_post`  AS SELECT `user`.`username` AS `username`, `post`.`id` AS `id`, `post`.`img_url` AS `img_url`, `post`.`desc` AS `desc`, `post`.`created_at` AS `created_at`, `post`.`updated_at` AS `updated_at`, `post`.`author_id` AS `author_id` FROM (`user` join `post`) WHERE `user`.`id` = `post`.`author_id` ;
 
 --
 -- Indexes for dumped tables
