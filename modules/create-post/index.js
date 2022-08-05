@@ -5,12 +5,15 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { PhotographIcon } from '@heroicons/react/outline';
 import { useModal } from 'hooks/useModal';
+import Router from 'next/router';
+import API from '@/services/api';
+import { toast } from 'react-toastify';
 
 const CreatePostModule = () => {
   const { user } = useAuth();
-
-  const [showImage, setShowImage] = useState(false);
   const { setIsOpen } = useModal();
+
+  const [loading, setLoading] = useState(false);
 
   const handleCancel = () => {
     setIsOpen(false);
@@ -32,8 +35,16 @@ const CreatePostModule = () => {
     console.log(data);
     const formData = new FormData();
     formData.append('desc', data.desc);
-    formData.append('image', data.image);
-    console.log(formData);
+    formData.append('file', data.image[0]);
+    try {
+      const result = await API().post('/post/create', formData);
+      console.log(result);
+      toast.success('Post created successfully');
+      setIsOpen(false);
+    } catch (error) {
+      toast.error('Something went wrong');
+    }
+    setLoading(false);
   };
 
   const covertToImageUrl = () => {
@@ -79,6 +90,7 @@ const CreatePostModule = () => {
             id="upload-image"
             className="sr-only"
             accept="image/png, image/jpeg, image/jpg"
+            disabled={loading}
             {...register('image', {
               required: { message: 'Image is required', value: true },
             })}
@@ -101,6 +113,7 @@ const CreatePostModule = () => {
                 rows={10}
                 className="w-full block py-1 resize-none focus:outline-none"
                 placeholder="What do you want to talk about?"
+                disabled={loading}
                 {...register('desc', {
                   required: { message: 'Description is required', value: true },
                   maxLength: {
@@ -135,10 +148,11 @@ const CreatePostModule = () => {
               onClick={handleCancel}
               isPrimary
               className={'bg-white border-red-1 text-red-1'}
+              isDisabled={loading}
             >
               Cancel
             </Button>
-            <Button isPrimary type={'submit'}>
+            <Button isPrimary type={'submit'} isDisabled={loading}>
               Upload
             </Button>
           </div>

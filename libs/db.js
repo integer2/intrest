@@ -105,7 +105,7 @@ class DbConnection {
   async getAllPostByUser(username) {
     const connection = await this.getConnection();
     const [result] = await connection.execute(
-      'SELECT * FROM all_post WHERE username = ?',
+      'SELECT * FROM all_post WHERE username = ? ORDER BY created_at DESC',
       [username]
     );
     return result;

@@ -2,14 +2,13 @@ import Image from 'next/image';
 import React from 'react';
 import { Button } from '../button';
 import { useAuth } from 'context/auth';
-import { useModal } from 'hooks/useModal';
 import SubscriptionButton from '../subscription-button';
 
 const PostDetail = ({ post }) => {
   const { user } = useAuth();
   return (
     <div
-      className="h-[490px] bg-white flex items-center p-5 gap-14 w-full max-w-6xl relative rounded-lg"
+      className="h-[490px] bg-white flex items-center p-5 gap-8 w-full max-w-6xl relative rounded-lg overflow-hidden"
       onClick={(e) => e.stopPropagation()}
     >
       <div className="max-w-[450px] max-h-[450px] aspect-square relative h-full w-full flex-1">
@@ -20,8 +19,11 @@ const PostDetail = ({ post }) => {
           objectFit="cover"
         />
       </div>
-      <div className="self-start flex-1 h-full flex flex-col w-full max-w-[500px] min-w-[600px] relative">
-        <div className="flex items-center justify-between w-full border-b pb-4">
+      <div
+        id="post-detail"
+        className="self-start flex-1 h-full flex flex-col w-full max-w-[500px] min-w-[600px] relative overflow-y-scroll"
+      >
+        <div className="sticky top-0 bg-white z-50 flex items-center justify-between w-full border-b pb-4">
           <div className="flex gap-4 items-center font-medium text-lg">
             <div className="h-10 w-10 relative rounded-full overflow-clip ">
               <Image
@@ -35,25 +37,33 @@ const PostDetail = ({ post }) => {
           </div>
           {user?.username !== post?.username && <SubscriptionButton />}
         </div>
-        <div className="text-lg py-4 flex">
-          <div className="relative h-6 w-6 inline-flex mr-2 rounded-full overflow-clip">
+        <div className="text-base py-4 flex gap-2 scroll-smooth">
+          <div className="relative h-8 w-8 inline-flex mr-2 shrink-0 rounded-full overflow-clip">
             <Image
               src={post?.profile_img || '/assets/images/no-profile.jpg'}
               layout={'fill'}
               alt={'post'}
             />
           </div>
-          <span className="font-semibold">{post?.username}</span>{' '}
-          {post?.desc?.split('\n').map((item, index) => {
-            return (
-              <span key={index}>
-                {item}
-                <br />{' '}
-              </span>
-            );
-          }) || 'No Description'}
+          <div>
+            <span className="font-semibold">{post?.username}</span>{' '}
+            {post?.desc?.split('\n').map((item, index) => {
+              return (
+                <span key={index}>
+                  {item}
+                  <br />{' '}
+                </span>
+              );
+            }) || 'No Description'}
+          </div>
         </div>
-        <div className="absolute bottom-0 bg-white w-full">
+        {/* Comments */}
+        <section>
+          <div>
+
+          </div>
+        </section>
+        <div className="sticky bottom-0 mt-auto bg-white w-full pt-4 border-t">
           <form
             className="flex group px-4 bg-gray-6"
             onClick={(e) => e.preventDefault()}

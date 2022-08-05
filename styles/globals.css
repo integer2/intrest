@@ -11,3 +11,7 @@
 .container {
   @apply px-10 mx-auto;
 }
+
+#post-detail::-webkit-scrollbar {
+  width: 0;
+}
