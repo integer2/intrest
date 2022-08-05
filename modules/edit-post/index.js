@@ -32,7 +32,7 @@ const EditPostModule = ({ post }) => {
   const editPost = async (data) => {
     try {
       await API().post('/post/edit', {
-        id: post.post_id,
+        id: post.id,
         desc: data.desc,
       });
       toast.success('Post updated successfully');
@@ -57,7 +57,7 @@ const EditPostModule = ({ post }) => {
           >
             <Image
               layout="fill"
-              src={post.post_img}
+              src={post.img_url || '/assets/images/image-not-found.png'}
               alt="upload-image"
               objectFit="cover"
             />

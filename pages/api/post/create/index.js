@@ -11,8 +11,6 @@ export default async function handler(req, res) {
     const auth = await authorization(req, res);
     const { fields, files } = await dataForm(req);
 
-    console.log(fields);
-
     const newPath = await moveFile(files.file);
 
     const { id: author_id } = auth;

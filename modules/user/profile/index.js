@@ -36,6 +36,11 @@ const UserProfileModule = () => {
     }
   }, [router.query.username]);
 
+  // update post every time user create new post on the same page
+  useEffect(() => {
+    handleFetchPost(router.query.username);
+  } ,[router.query.username]);
+
   if (!loading) {
     if (!profile) {
       return <UserNotFound />;
@@ -45,7 +50,7 @@ const UserProfileModule = () => {
         <div className=" top-0 py-8 z-10 bg-main w-full">
           <ProfileHeader profile={profile} />
         </div>
-        <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-8 pb-10">
           <div className="flex items-center text-xl gap-2 font-medium">
             <ViewGridIcon className="h-5 w-5" />
             <span>Post</span>
@@ -53,7 +58,7 @@ const UserProfileModule = () => {
           <div>
             <ImageContainer>
               {post?.map((data, index) => {
-                return <ImageCard key={index} post={data} />;
+                return <ImageCard key={index} profile={profile} post={data} />;
               }) || 'No Post'}
             </ImageContainer>
           </div>

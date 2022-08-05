@@ -128,6 +128,12 @@ class DbConnection {
     ]);
     return result;
   }
+
+  async getPost(post_id) {
+    const connection = await this.getConnection();
+    const [result] = await connection.execute('CALL getPost(?)', [post_id]);
+    return result[0][0];
+  }
 }
 
 const db = new DbConnection();

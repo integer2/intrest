@@ -3,12 +3,12 @@ import Image from 'next/image';
 import React from 'react';
 import PostDetail from '../post-detail';
 
-const ImageCard = ({ post }) => {
+const ImageCard = ({ post, profile }) => {
   const modal = useModal();
 
   const handleOnClick = (e) => {
     modal.setIsOpen(true);
-    modal.setContent(<PostDetail post={post}/>)
+    modal.setContent(<PostDetail post={post} profile={profile} />);
   };
 
   return (

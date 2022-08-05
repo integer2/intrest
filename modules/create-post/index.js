@@ -32,14 +32,13 @@ const CreatePostModule = () => {
   });
 
   const uploadPost = async (data) => {
-    console.log(data);
     const formData = new FormData();
     formData.append('desc', data.desc);
     formData.append('file', data.image[0]);
     try {
       const result = await API().post('/post/create', formData);
-      console.log(result);
       toast.success('Post created successfully');
+      Router.reload();
       setIsOpen(false);
     } catch (error) {
       toast.error('Something went wrong');
@@ -101,7 +100,7 @@ const CreatePostModule = () => {
             <div className="flex items-center">
               <div className="h-10 w-10 relative rounded-full overflow-clip">
                 <Image
-                  src={user?.img_url || '/assets/images/image-not-found.png'}
+                  src={user?.img_url || '/assets/images/no-profile.jpg'}
                   alt="image-profile"
                   layout="fill"
                 />

@@ -1,6 +1,7 @@
 import CreatePostModule from '@/modules/create-post';
 import { PlusIcon } from '@heroicons/react/solid';
 import { useModal } from 'hooks/useModal';
+import Router from 'next/router';
 import React from 'react';
 import Button from './Button';
 
@@ -9,6 +10,7 @@ const CreatePostButton = () => {
   const handleClick = () => {
     modal.setIsOpen(true);
     modal.setContent(<CreatePostModule />);
+    // Router.push(Router.pathname);
   };
   return (
     <div>

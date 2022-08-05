@@ -1,13 +1,52 @@
 import Image from 'next/image';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from '../button';
 import { useAuth } from 'context/auth';
 import SubscriptionButton from '../subscription-button';
 import { DotsHorizontalIcon } from '@heroicons/react/outline';
 import DotsButton from './DotsButton';
+import API from '@/services/api';
 
-const PostDetail = ({ post }) => {
+const PostDetail = ({ post, profile }) => {
   const { user } = useAuth();
+
+  const [postData, setPostData] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fetchPost = async (post) => {
+    try {
+      const result = await API().post(`/post/get`, {
+        post_id: post.post_id,
+      });
+      setPostData(result.data);
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    try {
+      if (!post) {
+        setError('Post not found');
+      }
+      fetchPost(post);
+    } catch (error) {}
+    setLoading(false);
+  }, [post]);
+
+  if (loading) {
+    return <p>Loading</p>;
+  }
+  if (!post) {
+    return <p>No post found</p>;
+  }
+
+  if (!postData) {
+    return <p>No post found</p>;
+  }
+
+  if (error) {
+    return <p>{error}</p>;
+  }
 
   return (
     <div
@@ -16,7 +55,7 @@ const PostDetail = ({ post }) => {
     >
       <div className="max-w-[450px] max-h-[450px] aspect-square relative h-full w-full flex-1">
         <Image
-          src={post?.post_img || '/assets/images/image-not-found.png'}
+          src={postData?.img_url || '/assets/images/image-not-found.png'}
           alt=""
           layout="fill"
           objectFit="cover"
@@ -31,35 +70,38 @@ const PostDetail = ({ post }) => {
             <div className="flex gap-4 items-center font-medium text-lg">
               <div className="h-10 w-10 relative rounded-full overflow-clip ">
                 <Image
-                  src={post?.profile_img || '/assets/images/no-profile.jpg'}
+                  src={profile?.img_url || '/assets/images/no-profile.jpg'}
                   alt={'alt'}
                   layout="fill"
                   objectFit="cover"
                 />
               </div>
-              {post?.username}
+              {profile?.username}
             </div>
           </div>
-          {user?.username !== post?.username && (
-            <SubscriptionButton follower_id={user?.id} user_id={post?.id} />
+          {user?.username !== postData?.username && (
+            <SubscriptionButton
+              follower_id={user?.id}
+              user_id={post?.post_id}
+            />
           )}
-          {post?.username === user.username && (
+          {postData?.username === user.username && (
             <>
-              <DotsButton post={post} />
+              <DotsButton post={postData} />
             </>
           )}
         </div>
         <div className="text-base py-4 flex gap-2 scroll-smooth">
           <div className="relative h-8 w-8 inline-flex mr-2 shrink-0 rounded-full overflow-clip">
             <Image
-              src={post?.profile_img || '/assets/images/no-profile.jpg'}
+              src={profile?.img_url || '/assets/images/no-profile.jpg'}
               layout={'fill'}
               alt={'post'}
             />
           </div>
           <div>
-            <span className="font-semibold">{post?.username}</span>{' '}
-            {post?.desc?.split('\n').map((item, index) => {
+            <span className="font-semibold">{postData?.username}</span>{' '}
+            {postData?.desc?.split('\n').map((item, index) => {
               return (
                 <span key={index}>
                   {item}

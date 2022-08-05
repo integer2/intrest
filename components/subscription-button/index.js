@@ -5,7 +5,7 @@ import { Button } from '../button';
 
 export default function SubscriptionButton({ follower_id, user_id }) {
   const [followed, setFollowed] = useState(false);
-  const [loading, setLoading] = useState(true);  
+  const [loading, setLoading] = useState(true);
 
   const handleSubscription = async (follower_id, user_id) => {
     const result = await API().post('/user/followed', {
