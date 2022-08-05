@@ -134,6 +134,14 @@ class DbConnection {
     const [result] = await connection.execute('CALL getPost(?)', [post_id]);
     return result[0][0];
   }
+
+  async getAllNotFollowed(user_id) {
+    const connection = await this.getConnection();
+    const [result] = await connection.execute('CALL getAllNotFollowed(?)', [
+      user_id,
+    ]);
+    return result[0];
+  }
 }
 
 const db = new DbConnection();
