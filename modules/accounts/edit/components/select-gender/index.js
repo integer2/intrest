@@ -7,7 +7,10 @@ const SelectGender = ({ register, confirmHandle }) => {
     confirmHandle(value);
   };
   return (
-    <div className="flex flex-col bg-white rounded-lg min-w-[420px] p-4">
+    <div
+      className="flex flex-col bg-white rounded-lg min-w-[420px] p-4"
+      onClick={(e) => e.stopPropagation()}
+    >
       <div className="text-xl font-medium border-b p-2 text-center">Gender</div>
       <div className="space-y-2 p-2">
         <div className="space-x-2 text-base">

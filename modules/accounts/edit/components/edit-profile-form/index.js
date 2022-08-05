@@ -18,7 +18,7 @@ const EditProfileForm = ({ onSubmit, user }) => {
       name: user.name,
       username: user.username,
       bio: user.bio,
-      birthday: user.birthday.split('T')[0],
+      birthday: user?.birthday?.split('T')[0] || '',
       gender: user.gender,
       email: user.email,
       img_url: user.img_url,
