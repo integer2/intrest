@@ -1,4 +1,7 @@
 import { Button } from '@/components/button';
+import SubscriptionButton, {
+  FollowButton,
+} from '@/components/subscription-button';
 import { useAuth } from 'context/auth';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -22,21 +25,21 @@ export default function ProfileHeader({ profile }) {
               {profile?.username || '{username}'}
             </a>
           </Link>
-          {
-            (user?.username == profile?.username && (
-              <Link href={'/accounts/edit'}>
-                <a>
-                  <Button
-                    type={'button'}
-                    className={'border-dark-4 text-dark-4'}
-                    isSmall
-                  >
-                    Edit Profile
-                  </Button>
-                </a>
-              </Link>
-            ))
-          }
+          {user?.username == profile?.username ? (
+            <Link href={'/accounts/edit'}>
+              <a>
+                <Button
+                  type={'button'}
+                  className={'border-dark-4 text-dark-4'}
+                  isSmall
+                >
+                  Edit Profile
+                </Button>
+              </a>
+            </Link>
+          ) : (
+            <SubscriptionButton follower_id={user?.id} user_id={profile?.id} />
+          )}
         </div>
         <div className="flex gap-5 text-purple-1 font-medium">
           <button>{profile?.total_post} Post</button>

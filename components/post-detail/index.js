@@ -1,14 +1,17 @@
 import Image from 'next/image';
 import React from 'react';
 import { Button } from '../button';
-import { UserAddIcon } from '@heroicons/react/outline';
-import { ChatAltIcon } from '@heroicons/react/solid';
 import { useAuth } from 'context/auth';
+import { useModal } from 'hooks/useModal';
+import SubscriptionButton from '../subscription-button';
 
 const PostDetail = ({ post }) => {
   const { user } = useAuth();
   return (
-    <div className="h-[490px] bg-white flex items-center p-5 gap-14 w-full relative rounded-lg">
+    <div
+      className="h-[490px] bg-white flex items-center p-5 gap-14 w-full max-w-6xl relative rounded-lg"
+      onClick={(e) => e.stopPropagation()}
+    >
       <div className="max-w-[450px] max-h-[450px] aspect-square relative h-full w-full flex-1">
         <Image
           src={post?.post_img || '/assets/images/image-not-found.png'}
@@ -22,7 +25,7 @@ const PostDetail = ({ post }) => {
           <div className="flex gap-4 items-center font-medium text-lg">
             <div className="h-10 w-10 relative rounded-full overflow-clip ">
               <Image
-                src={post?.user?.profile_img || '/assets/images/no-profile.jpg'}
+                src={post?.profile_img || '/assets/images/no-profile.jpg'}
                 alt={'alt'}
                 layout="fill"
                 objectFit="cover"
@@ -30,14 +33,16 @@ const PostDetail = ({ post }) => {
             </div>
             {post?.username}
           </div>
-          {user?.username !== post?.username && (
-            <Button isPrimary isSmall className={'gap-2 rounded-md px-3 py-2'}>
-              <UserAddIcon className="h-5 w-5" />
-              Follow
-            </Button>
-          )}
+          {user?.username !== post?.username && <SubscriptionButton />}
         </div>
-        <p className="text-lg py-4">
+        <div className="text-lg py-4 flex">
+          <div className="relative h-6 w-6 inline-flex mr-2 rounded-full overflow-clip">
+            <Image
+              src={post?.profile_img || '/assets/images/no-profile.jpg'}
+              layout={'fill'}
+              alt={'post'}
+            />
+          </div>
           <span className="font-semibold">{post?.username}</span>{' '}
           {post?.desc?.split('\n').map((item, index) => {
             return (
@@ -47,7 +52,7 @@ const PostDetail = ({ post }) => {
               </span>
             );
           }) || 'No Description'}
-        </p>
+        </div>
         <div className="absolute bottom-0 bg-white w-full">
           <form
             className="flex group px-4 bg-gray-6"

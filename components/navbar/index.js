@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { useAuth } from 'context/auth';
 import Router from 'next/router';
 import React, { useEffect, useState } from 'react';
-import { Button } from '../button';
+import { Button, CreatePostButton } from '../button';
 import ProfileButton from '../profile-button';
 import SearchInput from '../search-input';
 
@@ -55,19 +55,15 @@ export const AuthNavbarMenu = () => {
   const auth = useAuth();
   return (
     <>
-      <div>
-        <Button isPrimary isRounded className={'px-3 py-3'}>
-          <PlusIcon className="h-6 w-6 text-white" />
-        </Button>
-      </div>
-      <div>
+      <CreatePostButton />
+      {/* <div>
         <Button isRounded className={'px-3 py-3 bg-white shadow-button'}>
           <div className="relative">
             <BellIcon className="h-6 w-6 text-purple-1" />
             <div className="h-3 w-3 absolute bg-red-1 rounded-full top-0 right-0"></div>
           </div>
         </Button>
-      </div>
+      </div> */}
       <ProfileButton user={auth.user} />
     </>
   );

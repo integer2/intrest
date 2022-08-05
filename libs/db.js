@@ -110,6 +110,15 @@ class DbConnection {
     );
     return result;
   }
+
+  async checkIsFollowed(follower_id, user_id) {
+    const connection = await this.getConnection();
+    const [result] = await connection.execute('SELECT isFollowed(?, ?) AS isFollowed', [
+      follower_id,
+      user_id,
+    ]);
+    return result;
+  }
 }
 
 const db = new DbConnection();

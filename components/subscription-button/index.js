@@ -1,0 +1,56 @@
+import API from '@/services/api';
+import { UserAddIcon } from '@heroicons/react/outline';
+import { useEffect, useState } from 'react';
+import { Button } from '../button';
+
+export default function SubscriptionButton({ follower_id, user_id }) {
+  const [followed, setFollowed] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const handleSubscription = async (follower_id, user_id) => {
+    const result = await API().post('/user/followed', {
+      follower_id,
+      user_id,
+    });
+    setFollowed(result.data.isFollowed);
+  };
+
+  useEffect(() => {
+    try {
+      handleSubscription(follower_id, user_id);
+    } catch (error) {
+      setError(error);
+    } finally {
+      setLoading(false);
+    }
+  }, [followed, follower_id, user_id]);
+
+  if (!loading) {
+    if (followed) {
+      return <UnfollowButton />;
+    } else {
+      return <FollowButton />;
+    }
+  } else {
+    return <p>Loading</p>;
+  }
+}
+
+export const FollowButton = () => {
+  return (
+    <Button isPrimary isSmall className={'gap-2 rounded-md px-3 py-2'}>
+      <UserAddIcon className="h-5 w-5" />
+      Follow
+    </Button>
+  );
+};
+
+export const UnfollowButton = () => {
+  return (
+    <Button isSecondary isSmall className={'gap-2 rounded-md px-3 py-2'}>
+      <UserAddIcon className="h-5 w-5" />
+      Unfollow
+    </Button>
+  );
+};
