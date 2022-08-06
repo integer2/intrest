@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 05, 2022 at 04:39 PM
+-- Generation Time: Aug 06, 2022 at 07:52 PM
 -- Server version: 10.4.20-MariaDB
 -- PHP Version: 8.0.9
 
@@ -18,13 +18,17 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `intrest`
+-- Database: `backup_intrest`
 --
 
 DELIMITER $$
 --
 -- Procedures
 --
+CREATE DEFINER=`intrest`@`localhost` PROCEDURE `addComments` (IN `in_post_id` INT, IN `in_user_id` INT, IN `in_comment` TEXT)  BEGIN
+    INSERT INTO comment (post_id, user_id, `comment`) values (in_post_id, in_user_id, in_comment);
+END$$
+
 CREATE DEFINER=`intrest`@`localhost` PROCEDURE `createNewUser` (IN `in_username` VARCHAR(24), IN `in_email` VARCHAR(24), IN `in_password` VARCHAR(16))  BEGIN
   IF (SELECT isUsernameExist(in_username)) = FALSE THEN
     SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Username already exist';
@@ -46,12 +50,44 @@ CREATE DEFINER=`intrest`@`localhost` PROCEDURE `createPost` (IN `in_author_id` I
   INSERT INTO post (author_id, img_url, `desc`) VALUES (in_author_id, in_img_url, in_desc);
 END$$
 
+CREATE DEFINER=`intrest`@`localhost` PROCEDURE `deleteComments` (IN `in_comment_id` INT)  BEGIN
+    DELETE FROM comment WHERE comment.id = in_comment_id;
+END$$
+
 CREATE DEFINER=`intrest`@`localhost` PROCEDURE `deletePost` (IN `in_post_id` INT)  BEGIN
 DELETE FROM post WHERE post.id = in_post_id;
 END$$
 
+CREATE DEFINER=`intrest`@`localhost` PROCEDURE `follow_user` (IN `in_follower_id` INT, IN `in_user_id` INT)  BEGIN
+  IF(SELECT isFollowed(in_follower_id, in_user_id)) = 1 THEN
+    DELETE FROM follower WHERE follower_id = in_follower_id AND user_id = in_user_id;
+  ELSE
+    INSERT INTO follower (follower_id, user_id) VALUES (in_follower_id, in_user_id);
+  END IF;
+END$$
+
 CREATE DEFINER=`intrest`@`localhost` PROCEDURE `getAllNotFollowed` (IN `in_user_id` INT)  BEGIN
     SELECT user_info.* FROM user_info JOIN user ON user_info.id = user.id WHERE user.id NOT IN (SELECT user_id FROM user JOIN follower WHERE user.id = follower.user_id AND follower_id = in_user_id AND follower.user_id) AND user.id <> in_user_id;
+END$$
+
+CREATE DEFINER=`intrest`@`localhost` PROCEDURE `getAllPostsForHome` (IN `in_user_id` INT)  BEGIN
+  SELECT * FROM user_post WHERE author_id IN (SELECT user_id FROM follower WHERE follower_id = in_user_id GROUP BY user_id AND follower_id) || author_id = in_user_id ORDER BY updated_at DESC;
+END$$
+
+CREATE DEFINER=`intrest`@`localhost` PROCEDURE `getComments` (IN `in_post_id` INT)  BEGIN
+    SELECT user_info.*, comment.id as comment_id, comment.comment as comment, comment.created_at as comment_created, comment.updated_at as comment_updated FROM user_info JOIN comment WHERE user_info.id = comment.user_id AND post_id = in_post_id;
+END$$
+
+CREATE DEFINER=`intrest`@`localhost` PROCEDURE `getFollowed` (IN `in_user_id` INT)  BEGIN
+SELECT * FROM user_info WHERE id IN (SELECT user_id FROM follower WHERE follower_id = in_user_id GROUP BY user_id AND follower_id);
+END$$
+
+CREATE DEFINER=`intrest`@`localhost` PROCEDURE `getFollowers` (IN `in_user_id` INT)  BEGIN
+    SELECT * FROM user_info WHERE id IN (SELECT follower_id FROM follower WHERE user_id = in_user_id GROUP BY user_id AND follower_id);
+END$$
+
+CREATE DEFINER=`intrest`@`localhost` PROCEDURE `getLikedPost` (IN `in_user_id` INT, IN `in_limit` INT, IN `in_offset` INT)  BEGIN
+    SELECT user_post.*, `like`.created_at as like_time FROM user_post JOIN `like` WHERE user_post.id =`like`.post_id AND `like`.user_id = in_user_id ORDER BY like_time DESC LIMIT in_limit OFFSET in_offset;
 END$$
 
 CREATE DEFINER=`intrest`@`localhost` PROCEDURE `getPost` (IN `in_post_id` INT)  BEGIN
@@ -60,6 +96,14 @@ END$$
 
 CREATE DEFINER=`intrest`@`localhost` PROCEDURE `getUserInfo` (IN `in_user_id` INT, IN `in_email` VARCHAR(24))  BEGIN
   SELECT * FROM user_info WHERE id = in_user_id AND email = in_email;
+END$$
+
+CREATE DEFINER=`intrest`@`localhost` PROCEDURE `like_post` (IN `in_user_id` INT, IN `in_post_id` INT)  BEGIN
+    IF(SELECT isLiked(in_user_id, in_post_id) = 0) THEN
+       INSERT INTO `like` (user_id, post_id) VALUES (in_user_id, in_post_id);
+    ELSE
+        DELETE FROM `like` WHERE user_id = in_user_id AND post_id = in_post_id;
+    END IF;
 END$$
 
 CREATE DEFINER=`intrest`@`localhost` PROCEDURE `loginUser` (IN `in_email` VARCHAR(24), IN `in_password` VARCHAR(16))  BEGIN
@@ -109,6 +153,15 @@ CREATE DEFINER=`intrest`@`localhost` FUNCTION `isFollowed` (`in_follower_id` INT
     RETURN followed_value;
 end$$
 
+CREATE DEFINER=`intrest`@`localhost` FUNCTION `isLiked` (`in_user_id` INT, `in_post_id` INT) RETURNS TINYINT(1) BEGIN
+  DECLARE liked BOOLEAN;
+  SET liked = FALSE;
+  IF (SELECT DISTINCT COUNT(*) FROM `like` WHERE user_id = in_user_id AND post_id = in_post_id GROUP BY user_id AND post_id) > 0 THEN
+    SET liked = TRUE;
+  END IF;
+  RETURN liked;
+END$$
+
 CREATE DEFINER=`intrest`@`localhost` FUNCTION `isUsernameExist` (`in_username` VARCHAR(24)) RETURNS TINYINT(1) BEGIN
   DECLARE valid_username BOOLEAN;
   SET valid_username = FALSE;
@@ -144,9 +197,10 @@ CREATE TABLE `all_post` (
 --
 
 CREATE TABLE `comment` (
+  `id` int(11) NOT NULL,
   `post_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `comment` varchar(150) NOT NULL,
+  `comment` text NOT NULL,
   `created_at` datetime DEFAULT current_timestamp(),
   `updated_at` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -408,6 +462,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- Indexes for table `comment`
 --
 ALTER TABLE `comment`
+  ADD PRIMARY KEY (`id`),
   ADD KEY `comment_post_id_fk` (`post_id`),
   ADD KEY `comment` (`user_id`);
 
@@ -449,6 +504,12 @@ ALTER TABLE `user_profile`
 --
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `comment`
+--
+ALTER TABLE `comment`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `post`
