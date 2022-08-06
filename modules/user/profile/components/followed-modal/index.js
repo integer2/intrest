@@ -1,11 +1,13 @@
 import SubscriptionButton from '@/components/subscription-button';
 import API from '@/services/api';
 import { XIcon } from '@heroicons/react/outline';
+import { useAuth } from 'context/auth';
 import Image from 'next/image';
 import React, { useEffect } from 'react';
 
-const FollowedModal = ({ user, closeModal }) => {
+const FollowedModal = ({ closeModal }) => {
   const [followers, setFollowers] = React.useState([]);
+  const {user} = useAuth();
 
   const getFollowers = async () => {
     const res = await API().post('/user/followed/get');
