@@ -1,24 +1,28 @@
 import ImageCard from '@/components/image-card';
 import ImageContainer from '@/components/image-container';
 import { LoadingImage } from '@/components/loading';
+import { ImageCardSkeleton } from '@/components/skeleton';
 import API from '@/services/api';
-import { useAuth } from 'context/auth';
 import React, { useEffect, useState } from 'react';
 
-const HomeModule = () => {
+const ExploreModule = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [posts, setPosts] = useState([]);
-  const { user } = useAuth();
 
-  const handleFetchPosts = async () => {
-    const response = await API().post('/post/home');
-    setPosts(response.data.posts);
+  const fetchPosts = async () => {
+    const result = await API().get('/post/get/all', {
+      params: {
+        limit: 15,
+        offset: 0,
+      },
+    });
+    setPosts(result.data.result);
   };
 
   useEffect(() => {
     try {
-      handleFetchPosts();
+      fetchPosts();
     } catch (error) {
       setError(error);
     } finally {
@@ -38,11 +42,11 @@ const HomeModule = () => {
     <div className="py-10">
       <ImageContainer>
         {posts.map((post, index) => {
-          return <ImageCard key={index} post={post} profile={user} />;
+          return <ImageCard key={index} post={post} />;
         })}
       </ImageContainer>
     </div>
   );
 };
 
-export default HomeModule;
+export default ExploreModule;

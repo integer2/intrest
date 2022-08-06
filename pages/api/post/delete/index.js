@@ -12,11 +12,8 @@ export default async function handler(req, res) {
   try {
     await authorization(req, res);
     const data = req.body;
-    console.log(data);
-
     await db.deletePost(data.id).then((result) => {
       const oldImagePath = './public' + data.img_url;
-      console.log(oldImagePath);
       deleteFile(oldImagePath);
     });
 

@@ -34,7 +34,6 @@ const PostDetail = ({ post }) => {
   };
 
   useEffect(() => {
-    console.log(post);
     try {
       if (!post) {
         setError('Post not found');

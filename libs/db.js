@@ -163,6 +163,15 @@ class DbConnection {
     ]);
     return result[0];
   }
+
+  async getAllPostsForExplore(limit, offset) {
+    const connection = await this.getConnection();
+    const [result] = await connection.execute(
+      'SELECT * FROM user_post ORDER BY created_at DESC LIMIT ? OFFSET ?',
+      [limit, offset]
+    );
+    return result;
+  }
 }
 
 const db = new DbConnection();

@@ -17,17 +17,23 @@ export const SidebarSkeleton = () => {
     <div className=" bg-white w-[255px] sticky top-0 h-screen shadow-sidebar overflow-y-none">
       <div className="px-10 flex flex-col gap-8 h-full">
         <div className=" sticky top-0 z-10 pt-7 pb-2 ">
-          <div className="bg-gray-300 animate-pulse h-11">
-          </div>
+          <div className="bg-gray-300 animate-pulse h-11"></div>
         </div>
         <div className="flex flex-col gap-10 justify-between h-full">
-          <div className="flex flex-col gap-10 flex-1 bg-gray-300 animate-pulse">
-          </div>
+          <div className="flex flex-col gap-10 flex-1 bg-gray-300 animate-pulse"></div>
           <div className="pb-7 text-gray-4 font-medium text-sm">
             <div className="bg-gray-300 animate-pulse rounded-md h-5"></div>
           </div>
         </div>
       </div>
     </div>
+  );
+};
+
+export const ImageCardSkeleton = () => {
+  return (
+    <div
+      className="aspect-square w-full relative cursor-pointer bg-gray-300 animate-pulse"
+    ></div>
   );
 };
