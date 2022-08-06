@@ -3,11 +3,30 @@ import SubscriptionButton, {
   FollowButton,
 } from '@/components/subscription-button';
 import { useAuth } from 'context/auth';
+import { useModal } from 'hooks/useModal';
 import Image from 'next/image';
 import Link from 'next/link';
+import FollowedModal from '../followed-modal';
+import FollowersModal from '../followers-modal';
 
 export default function ProfileHeader({ profile }) {
-  const { user, isAuthenticated } = useAuth();
+  const { user } = useAuth();
+  const modal = useModal();
+
+  const closeModal = () => {
+    modal.setIsOpen(false);
+  };
+
+  const openFollowersModal = () => {
+    modal.setIsOpen(true);
+    modal.setContent(<FollowersModal user={profile} closeModal={closeModal} />);
+  };
+
+  const openFollowedModal = () => {
+    modal.setIsOpen(true);
+    modal.setContent(<FollowedModal user={profile} closeModal={closeModal} />);
+  };
+
   return (
     <div className="flex items-center gap-8">
       <div className="flex-shrink-0 flex-grow-0 w-[120px] h-[120px] relative rounded-full border overflow-hidden">
@@ -43,8 +62,12 @@ export default function ProfileHeader({ profile }) {
         </div>
         <div className="flex gap-5 text-purple-1 font-medium">
           <p>{profile?.total_post} Post</p>
-          <button>{profile?.total_followed} Followed</button>
-          <button>{profile?.total_follower} Followers</button>
+          <button onClick={openFollowedModal}>
+            {profile?.total_followed} Followed
+          </button>
+          <button onClick={openFollowersModal}>
+            {profile?.total_follower} Followers
+          </button>
         </div>
         <p className="text-dark-1">
           {

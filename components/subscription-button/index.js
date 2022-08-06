@@ -50,7 +50,7 @@ export const FollowButton = ({ onClick }) => {
       onClick={onClick}
       isPrimary
       isSmall
-      className={'gap-2 rounded-md px-3 py-2'}
+      className={'gap-2 rounded-md px-3 py-2 min-w-[125px]'}
     >
       <UserAddIcon className="h-5 w-5" />
       Follow
@@ -64,9 +64,9 @@ export const UnfollowButton = ({ onClick }) => {
       onClick={onClick}
       isSecondary
       isSmall
-      className={'gap-2 rounded-md px-3 py-2'}
+      className={'gap-2 rounded-md px-3 py-2 min-w-[125px]'}
     >
-      <UserAddIcon className="h-5 w-5" />
+      {/* <UserAddIcon className="h-5 w-5" /> */}
       Unfollow
     </Button>
   );

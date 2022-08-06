@@ -14,7 +14,7 @@ const UserProfileModule = () => {
   const [profile, setProfile] = useState(undefined);
   const [post, setPost] = useState([]);
 
-  const handleFirstVisit = async (username) => {
+  const handleFetchProfile = async (username) => {
     const result = await API().get(`/user/${username}`);
     setProfile(result.data.result);
   };
@@ -26,7 +26,7 @@ const UserProfileModule = () => {
 
   useEffect(() => {
     try {
-      handleFirstVisit(router.query.username).then(() => {
+      handleFetchProfile(router.query.username).then(() => {
         handleFetchPost(router.query.username);
       });
     } catch (error) {

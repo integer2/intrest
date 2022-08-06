@@ -183,12 +183,6 @@ class DbConnection {
     return result;
   }
 
-  async getFollowedData(user_id) {
-    const connection = await this.getConnection();
-    const [result] = await connection.execute('CALL getFollowed(?)', [user_id]);
-    return result[0];
-  }
-
   async checkIsLiked(user_id, post_id) {
     const connection = await this.getConnection();
     const [result] = await connection.execute(
@@ -213,6 +207,20 @@ class DbConnection {
       user_id,
       limit,
       offset,
+    ]);
+    return result[0];
+  }
+
+  async getFollowedData(user_id) {
+    const connection = await this.getConnection();
+    const [result] = await connection.execute('CALL getFollowed(?)', [user_id]);
+    return result[0];
+  }
+
+  async getFollowersData(user_id) {
+    const connection = await this.getConnection();
+    const [result] = await connection.execute('CALL getFollowers(?)', [
+      user_id,
     ]);
     return result[0];
   }
