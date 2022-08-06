@@ -7,28 +7,40 @@ import { DotsHorizontalIcon } from '@heroicons/react/outline';
 import DotsButton from './DotsButton';
 import API from '@/services/api';
 
-const PostDetail = ({ post, profile }) => {
+const PostDetail = ({ post }) => {
   const { user } = useAuth();
 
   const [postData, setPostData] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [profile, setProfile] = useState({});
 
   const fetchPost = async (post) => {
     try {
       const result = await API().post(`/post/get`, {
-        post_id: post.post_id,
+        post_id: post?.post_id || post.id,
       });
       setPostData(result.data);
     } catch (error) {}
   };
 
+  const fetchProfile = async (username) => {
+    try {
+      const result = await API().get(`/user/${username}`);
+      setProfile(result.data.result);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
+    console.log(post);
     try {
       if (!post) {
         setError('Post not found');
       }
       fetchPost(post);
+      fetchProfile(post.username);
     } catch (error) {}
     setLoading(false);
   }, [post]);

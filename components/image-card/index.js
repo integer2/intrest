@@ -17,7 +17,11 @@ const ImageCard = ({ post, profile }) => {
       onClick={handleOnClick}
     >
       <Image
-        src={post?.post_img || '/assets/images/image-not-found.png'}
+        src={
+          post?.post_img ||
+          post?.img_url ||
+          '/assets/images/image-not-found.png'
+        }
         layout={'fill'}
         objectFit="cover"
         alt="image"

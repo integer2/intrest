@@ -155,6 +155,14 @@ class DbConnection {
     ]);
     return result[0];
   }
+
+  async getAllPostsForHome(user_id) {
+    const connection = await this.getConnection();
+    const [result] = await connection.execute('CALL getAllPostsForHome(?)', [
+      user_id,
+    ]);
+    return result[0];
+  }
 }
 
 const db = new DbConnection();
