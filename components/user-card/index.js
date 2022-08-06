@@ -1,13 +1,17 @@
 import { UserAddIcon } from '@heroicons/react/outline';
+import { useAuth } from 'context/auth';
 import Image from 'next/image';
 import Router from 'next/router';
 import React from 'react';
 import { Button } from '../button';
+import SubscriptionButton from '../subscription-button';
 
 const UserCard = ({ data }) => {
+  console.log(data);
   const handleClick = () => {
     Router.push('/user/[username]', `/user/${data.username}`);
   };
+  const { user } = useAuth();
   return (
     <div
       className="flex flex-col bg-white items-center justify-center rounded-lg px-5 py-8 gap-5 cursor-pointer shadow-sm"
@@ -23,9 +27,7 @@ const UserCard = ({ data }) => {
       </div>
       <p className="font-medium text-purple-1">{data.username}</p>
       <div>
-        <Button isPrimary className={'px-4 py-2 rounded-md gap-2'}>
-          <UserAddIcon className="h-5 w-5" /> Follow
-        </Button>
+        <SubscriptionButton follower_id={user.id} user_id={data.id} />
       </div>
     </div>
   );

@@ -15,6 +15,14 @@ export default function SubscriptionButton({ follower_id, user_id }) {
     setFollowed(result.data.isFollowed);
   };
 
+  const handleClick = async (e) => {
+    e.stopPropagation();
+    await API().post('/user/follow', {
+      user_id,
+    });
+    setFollowed(!followed);
+  };
+
   useEffect(() => {
     try {
       handleSubscription(follower_id, user_id);
@@ -27,27 +35,37 @@ export default function SubscriptionButton({ follower_id, user_id }) {
 
   if (!loading) {
     if (followed) {
-      return <UnfollowButton />;
+      return <UnfollowButton onClick={handleClick} />;
     } else {
-      return <FollowButton />;
+      return <FollowButton onClick={handleClick} />;
     }
   } else {
     return <p>Loading</p>;
   }
 }
 
-export const FollowButton = () => {
+export const FollowButton = ({ onClick }) => {
   return (
-    <Button isPrimary isSmall className={'gap-2 rounded-md px-3 py-2'}>
+    <Button
+      onClick={onClick}
+      isPrimary
+      isSmall
+      className={'gap-2 rounded-md px-3 py-2'}
+    >
       <UserAddIcon className="h-5 w-5" />
       Follow
     </Button>
   );
 };
 
-export const UnfollowButton = () => {
+export const UnfollowButton = ({ onClick }) => {
   return (
-    <Button isSecondary isSmall className={'gap-2 rounded-md px-3 py-2'}>
+    <Button
+      onClick={onClick}
+      isSecondary
+      isSmall
+      className={'gap-2 rounded-md px-3 py-2'}
+    >
       <UserAddIcon className="h-5 w-5" />
       Unfollow
     </Button>

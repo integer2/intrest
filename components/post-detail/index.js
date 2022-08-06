@@ -93,7 +93,7 @@ const PostDetail = ({ post }) => {
           {user?.username !== postData?.username && (
             <SubscriptionButton
               follower_id={user?.id}
-              user_id={post?.post_id}
+              user_id={post?.author_id || post?.user_id}
             />
           )}
           {postData?.username === user.username && (

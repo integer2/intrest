@@ -172,6 +172,16 @@ class DbConnection {
     );
     return result;
   }
+
+  async followUser(follower_id, user_id) {
+    const connection = await this.getConnection();
+    const result = await connection.execute('CALL follow_user(?, ?)', [
+      follower_id,
+      user_id,
+    ]);
+
+    return result;
+  }
 }
 
 const db = new DbConnection();
