@@ -40,11 +40,14 @@ const ExploreModule = () => {
 
   return (
     <div className="py-10">
-      <ImageContainer>
-        {posts.map((post, index) => {
-          return <ImageCard key={index} post={post} />;
-        })}
-      </ImageContainer>
+      <h1 className='font-medium text-dark-1 text-xl'>Explore</h1>
+      <div className='py-10'>
+        <ImageContainer>
+          {posts.map((post, index) => {
+            return <ImageCard key={index} post={post} />;
+          })}
+        </ImageContainer>
+      </div>
     </div>
   );
 };
