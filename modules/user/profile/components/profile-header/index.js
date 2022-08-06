@@ -42,8 +42,8 @@ export default function ProfileHeader({ profile }) {
           )}
         </div>
         <div className="flex gap-5 text-purple-1 font-medium">
-          <button>{profile?.total_post} Post</button>
-          <button>{profile?.total_followed} Follow</button>
+          <p>{profile?.total_post} Post</p>
+          <button>{profile?.total_followed} Followed</button>
           <button>{profile?.total_follower} Followers</button>
         </div>
         <p className="text-dark-1">

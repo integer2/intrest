@@ -206,6 +206,16 @@ class DbConnection {
     ]);
     return result;
   }
+
+  async getLikedPost(user_id, limit, offset) {
+    const connection = await this.getConnection();
+    const [result] = await connection.execute('CALL getLikedPost(?, ?, ?)', [
+      user_id,
+      limit,
+      offset,
+    ]);
+    return result[0];
+  }
 }
 
 const db = new DbConnection();
