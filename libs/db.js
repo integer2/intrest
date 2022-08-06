@@ -248,6 +248,15 @@ class DbConnection {
     ]);
     return result;
   }
+
+  async searchUserByUsernameOrName(query) {
+    const connection = await this.getConnection();
+    const result = await connection.execute(
+      'SELECT * FROM user_info WHERE username LIKE ? OR name LIKE ? LIMIT 5',
+      [`%${query}%`, `%${query}%`]
+    );
+    return result;
+  }
 }
 
 const db = new DbConnection();

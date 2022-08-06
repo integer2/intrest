@@ -12,10 +12,6 @@ const Navbar = () => {
   const auth = useAuth();
   const [isScroll, setIsScroll] = useState(false);
 
-  const searchSubmit = (e) => {
-    e.preventDefault();
-  };
-
   const onScroll = (e) => {
     if (window.scrollY > 0) {
       setIsScroll(true);
@@ -39,7 +35,7 @@ const Navbar = () => {
       )}
     >
       <div className="flex-1">
-        <SearchInput onSubmit={searchSubmit} />
+        <SearchInput />
       </div>
       <div className="flex gap-7">
         {auth.user && <AuthNavbarMenu />}
