@@ -37,7 +37,9 @@ const EditAccountsModule = () => {
     formData.append('gender', data.gender);
     formData.append('email', data.email);
     formData.append('current_img_url', data.img_url);
-    formData.append('file', newImage);
+    if (newImage) {
+      formData.append('file', newImage);
+    }
     try {
       await API().post('/accounts/edit-profile', formData);
       await getUser();

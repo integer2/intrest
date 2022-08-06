@@ -10,6 +10,7 @@ import API from '@/services/api';
 import { toast } from 'react-toastify';
 import useLoading from 'hooks/useLoading';
 import { LoadingNormal } from '@/components/loading-spinner';
+import Router from 'next/router';
 
 const RegisterModule = () => {
   const {
@@ -26,6 +27,7 @@ const RegisterModule = () => {
     try {
       const result = await API().post('/auth/register', data);
       toast.success(result.data.message);
+      Router.push(routes.login);
     } catch (error) {
       toast.error(error.response.data.error);
     } finally {

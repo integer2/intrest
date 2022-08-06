@@ -15,14 +15,20 @@ export default async function handler(req, res) {
 
     let img_url = null;
 
-    if (Object.keys(files).length > 0) {
-      const newPath = await moveFile(files.file);
-      img_url = `/uploads/images/${newPath.split('/').pop()}`;
-    }
-
     const { id: user_id } = auth;
     const { email, username, name, birthday, gender, bio, current_img_url } =
       fields;
+
+    if (Object.keys(files).length > 0) {
+      const newPath = await moveFile(files.file);
+      img_url = `/uploads/images/${newPath.split('/').pop()}`;
+    } else {
+      if (current_img_url === 'null') {
+        img_url = null;
+      } else {
+        img_url = current_img_url;
+      }
+    }
 
     await db
       .updateUserInfo(
@@ -33,7 +39,7 @@ export default async function handler(req, res) {
         birthday,
         gender,
         bio,
-        img_url || current_img_url
+        img_url
       )
       .catch((error) => {
         deleteFile(newPath);
