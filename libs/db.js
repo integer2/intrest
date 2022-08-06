@@ -257,6 +257,15 @@ class DbConnection {
     );
     return result;
   }
+
+  async updateOldPassword(user_id, old_password, new_password) {
+    const connection = await this.getConnection();
+    const [result] = await connection.execute(
+      'CALL updateOldPassword(?, ?, ?)',
+      [user_id, old_password, new_password]
+    );
+    return result;
+  }
 }
 
 const db = new DbConnection();
