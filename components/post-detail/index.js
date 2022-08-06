@@ -3,13 +3,14 @@ import React, { useEffect, useState } from 'react';
 import { Button } from '../button';
 import { useAuth } from 'context/auth';
 import SubscriptionButton from '../subscription-button';
-import { DotsHorizontalIcon } from '@heroicons/react/outline';
 import DotsButton from './DotsButton';
 import API from '@/services/api';
 import LikeButton from '../like-button';
 import { HeartIcon } from '@heroicons/react/solid';
 import classNames from 'classnames';
 import { useForm } from 'react-hook-form';
+import moment from 'moment/moment';
+import { useModal } from 'hooks/useModal';
 
 const PostDetail = ({ post }) => {
   const { user } = useAuth();
@@ -21,6 +22,10 @@ const PostDetail = ({ post }) => {
   const [isLiked, setIsLiked] = React.useState(false);
   const [showLove, setShowLove] = React.useState(false);
   const [comments, setComments] = React.useState([]);
+  const [deleteComment, setDeleteComment] = React.useState({
+    show: false,
+    comment_id: '',
+  });
 
   const {
     register,
@@ -52,7 +57,6 @@ const PostDetail = ({ post }) => {
       const result = await API().post(`/post/comments/get`, {
         post_id,
       });
-      console.log(result);
       setComments(result.data.comments);
     } catch (error) {
       console.log(error);
@@ -71,6 +75,24 @@ const PostDetail = ({ post }) => {
       post_id: post?.post_id || post.id,
     });
     setIsLiked(!isLiked);
+  };
+
+  const clickDeleteCommentButton = (comment_id) => {
+    setDeleteComment({
+      show: true,
+      comment_id,
+    });
+  };
+
+  const handleClickDeleteComment = async (comment_id) => {
+    await API().post('/post/comments/delete', {
+      comment_id,
+    });
+    setDeleteComment({
+      show: false,
+      comment_id: '',
+    });
+    await fetchComments(post?.post_id || post.id);
   };
 
   const handleDoubleTap = (e) => {
@@ -196,6 +218,11 @@ const PostDetail = ({ post }) => {
                 </span>
               );
             }) || 'No Description'}
+            <div>
+              <span className="text-sm text-gray-600">
+                {moment(postData?.created_at).fromNow()}
+              </span>
+            </div>
           </div>
         </div>
         {/* Comments */}
@@ -224,6 +251,21 @@ const PostDetail = ({ post }) => {
                         </span>
                       );
                     }) || 'No Description'}
+                    <div className="flex gap-2 items-center">
+                      {comment.id === user.id && (
+                        <button
+                          onClick={() =>
+                            clickDeleteCommentButton(comment.comment_id)
+                          }
+                          className="text-sm text-red-1 hover:underline"
+                        >
+                          Delete
+                        </button>
+                      )}
+                      <span className="text-sm text-gray-600">
+                        {moment(comment?.comment_updated).fromNow()}
+                      </span>
+                    </div>
                   </div>
                 </div>
               );
@@ -261,6 +303,38 @@ const PostDetail = ({ post }) => {
           </div>
         </div>
       </div>
+      {deleteComment.show && (
+        <div
+          className="fixed top-0 left-0 bg-black bg-opacity-50 h-screen w-full flex items-center justify-center z-50"
+          onClick={() => setDeleteComment({ show: false })}
+        >
+          <div
+            className="bg-white p-5 min-w-[320px] rounded-md"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h2 className="font-semibold mb-2 text-lg">Delete this comment?</h2>
+            <p className="mb-4">The comment delete permanently!</p>
+            <div className="flex justify-end gap-3">
+              <Button
+                isSmall
+                className={'bg-white border-purple-1 text-purple-1'}
+                onClick={() => setDeleteComment({ show: false })}
+              >
+                Cancel
+              </Button>
+              <Button
+                isSmall
+                className={'bg-red-1 text-white border-red-1'}
+                onClick={() =>
+                  handleClickDeleteComment(deleteComment.comment_id)
+                }
+              >
+                Delete
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

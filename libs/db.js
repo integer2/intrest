@@ -240,6 +240,14 @@ class DbConnection {
     const [result] = await connection.execute('CALL getComments(?)', [post_id]);
     return result[0];
   }
+
+  async deleteComments(comment_id) {
+    const connection = await this.getConnection();
+    const [result] = await connection.execute('CALL deleteComments(?)', [
+      comment_id,
+    ]);
+    return result;
+  }
 }
 
 const db = new DbConnection();
