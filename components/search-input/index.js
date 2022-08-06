@@ -52,6 +52,7 @@ const SearchInput = () => {
           <SearchIcon className="h-5 w-5" />
         </label>
         <input
+          autoComplete="off"
           type="search"
           placeholder="Search..."
           id="search"
@@ -70,9 +71,7 @@ const SearchInput = () => {
                 {list.map((user, index) => {
                   return (
                     <Link key={index} href={`/user/${user.username}`}>
-                      <a
-                        className="flex gap-5 items-center cursor-pointer"
-                      >
+                      <a className="flex gap-5 items-center cursor-pointer">
                         <div className="h-10 w-10 relative rounded-full overflow-clip">
                           <Image
                             layout="fill"
