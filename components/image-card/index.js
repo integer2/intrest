@@ -13,7 +13,7 @@ const ImageCard = ({ post }) => {
 
   return (
     <div
-      className="aspect-square w-full relative cursor-pointer"
+      className="aspect-square w-full relative cursor-pointer bg-gray-300"
       onClick={handleOnClick}
     >
       <Image
