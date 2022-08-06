@@ -29,7 +29,7 @@ const LoginModule = () => {
       await auth.login(data);
       Router.replace(routes.home);
     } catch (error) {
-      console.log(error)
+      console.log(error);
       toast.error('Login unsuccessful');
     } finally {
       setLoading(false);
@@ -69,13 +69,11 @@ const LoginModule = () => {
             error={errors.password}
           />
         </div>
+        <Link href={routes.forgotPassword}>
+          <a className="text-gray-2 ml-auto">Forgot Password</a>
+        </Link>
         <div className="space-y-5">
-          <Button
-            isPrimary
-            isFull
-            isDisabled={loading}
-            type={'submit'}
-          >
+          <Button isPrimary isFull isDisabled={loading} type={'submit'}>
             {loading ? <LoadingNormal /> : 'Login'}
           </Button>
           <p className="text-gray-600 text-center">

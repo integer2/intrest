@@ -6,7 +6,7 @@ const API = (token) => {
   return axios.create({
     baseURL: 'http://localhost:3000/api/',
     headers: {
-      Authorization: `Bearer ${Cookies.get('token') || token || ''}`,
+      Authorization: `Bearer ${token || Cookies.get('token') || ''}`,
     },
   });
 };

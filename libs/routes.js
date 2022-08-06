@@ -10,6 +10,8 @@ const routes = {
   followers: '/followers',
   likes: '/likes',
   user: '/user',
+  forgotPassword: '/auth/forgot-password',
+  recovery: '/accounts/recovery',
 };
 
 export default routes;

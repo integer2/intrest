@@ -1,9 +1,11 @@
+import routes from '@/libs/routes';
 import API from '@/services/api';
 import { useAuth } from 'context/auth';
+import Router from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import EditImage from './components/edit-image';
-import EditPasswordFrom from './components/edit-password-form';
+import EditPasswordForm from './components/edit-password-form';
 import EditProfileForm from './components/edit-profile-form';
 import { useNewImage } from './hooks';
 
@@ -49,10 +51,6 @@ const EditAccountsModule = () => {
     }
   };
 
-  const submitEditPassword = (data) => {
-    console.log(data);
-  };
-
   return (
     <div className="border-2 px-20 py-10 rounded-md bg-white mb-10">
       <h1 className="text-3xl mb-5 border-b ml-56 py-2 font-semibold">
@@ -69,8 +67,13 @@ const EditAccountsModule = () => {
           <EditProfileForm onSubmit={submitEditProfile} user={user} />
           <div className="mt-8 pt-8 border-t-2">
             <h2 className="text-xl font-medium mb-4">Change Password</h2>
-            <EditPasswordFrom onSubmit={submitEditPassword} />
-            <button className="text-purple-1 font-medium mt-5">
+            <EditPasswordForm />
+            <button
+              onClick={() => {
+                Router.push(routes.forgotPassword);
+              }}
+              className="text-purple-1 font-medium mt-5"
+            >
               Forgot Password ?
             </button>
           </div>

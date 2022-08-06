@@ -266,6 +266,23 @@ class DbConnection {
     );
     return result;
   }
+
+  async getUserByEmail(email) {
+    const connection = await this.getConnection();
+    const [result] = await connection.execute('CALL getUserByEmail(?)', [
+      email,
+    ]);
+    return result[0];
+  }
+
+  async updateForgottenPassword(user_id, email, new_password) {
+    const connection = await this.getConnection();
+    const [result] = await connection.execute(
+      'CALL updateForgottenPassword(?, ?, ?)',
+      [user_id, email, new_password]
+    );
+    return result;
+  }
 }
 
 const db = new DbConnection();

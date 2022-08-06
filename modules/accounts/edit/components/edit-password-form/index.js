@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
-const EditPasswordFrom = () => {
+const EditPasswordForm = () => {
   const {
     register,
     handleSubmit,
@@ -95,4 +95,4 @@ const EditPasswordFrom = () => {
   );
 };
 
-export default EditPasswordFrom;
+export default EditPasswordForm;
