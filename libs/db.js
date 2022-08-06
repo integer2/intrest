@@ -182,6 +182,12 @@ class DbConnection {
 
     return result;
   }
+
+  async getFollowedData(user_id) {
+    const connection = await this.getConnection();
+    const [result] = await connection.execute('CALL getFollowed(?)', [user_id]);
+    return result[0];
+  }
 }
 
 const db = new DbConnection();

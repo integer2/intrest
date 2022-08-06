@@ -12,9 +12,9 @@ const MenuGroup = ({ title, datamenu, addtionalMenu = [], isImage }) => {
         return (
           <MenuItem
             key={index}
-            Icon={isImage ? data.avatar : data.icon}
+            Icon={isImage ? data.img_url : data.icon}
             label={isImage ? data.username : data.label}
-            link={isImage ? `${routes.user}/${data.id}` : data.link}
+            link={isImage ? `${routes.user}/${data.username}` : data.link}
             isActive={router.pathname === (isImage ? '#' : data.link)}
             isImage={isImage}
           />
