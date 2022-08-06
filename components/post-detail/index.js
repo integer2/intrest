@@ -9,6 +9,7 @@ import API from '@/services/api';
 import LikeButton from '../like-button';
 import { HeartIcon } from '@heroicons/react/solid';
 import classNames from 'classnames';
+import { useForm } from 'react-hook-form';
 
 const PostDetail = ({ post }) => {
   const { user } = useAuth();
@@ -19,6 +20,14 @@ const PostDetail = ({ post }) => {
   const [profile, setProfile] = useState({});
   const [isLiked, setIsLiked] = React.useState(false);
   const [showLove, setShowLove] = React.useState(false);
+  const [comments, setComments] = React.useState([]);
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm();
 
   const fetchPost = async (post) => {
     try {
@@ -33,6 +42,18 @@ const PostDetail = ({ post }) => {
     try {
       const result = await API().get(`/user/${username}`);
       setProfile(result.data.result);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchComments = async (post_id) => {
+    try {
+      const result = await API().post(`/post/comments/get`, {
+        post_id,
+      });
+      console.log(result);
+      setComments(result.data.comments);
     } catch (error) {
       console.log(error);
     }
@@ -69,6 +90,15 @@ const PostDetail = ({ post }) => {
     }
   };
 
+  const handleAddComments = async (data) => {
+    const result = await API().post('/post/comments/add', {
+      post_id: post?.post_id || post.id,
+      comment: data.comment,
+    });
+    await fetchComments(post?.post_id || post.id);
+    setValue('comment', '');
+  };
+
   useEffect(() => {
     try {
       if (!post) {
@@ -77,6 +107,7 @@ const PostDetail = ({ post }) => {
       fetchPost(post);
       fetchProfile(post.username);
       checkIsLiked(post);
+      fetchComments(post.post_id || post.id);
     } catch (error) {}
     setLoading(false);
   }, [post]);
@@ -147,8 +178,8 @@ const PostDetail = ({ post }) => {
             </>
           )}
         </div>
-        <div className="text-base py-4 flex gap-2 scroll-smooth">
-          <div className="relative h-8 w-8 inline-flex mr-2 shrink-0 rounded-full overflow-clip">
+        <div className="text-base py-4 flex gap-5 scroll-smooth">
+          <div className="relative h-8 w-8 shrink-0 rounded-full overflow-clip">
             <Image
               src={profile?.img_url || '/assets/images/no-profile.jpg'}
               layout={'fill'}
@@ -169,7 +200,35 @@ const PostDetail = ({ post }) => {
         </div>
         {/* Comments */}
         <section>
-          <div></div>
+          <div>
+            {comments.map((comment, index) => {
+              return (
+                <div
+                  className="text-base py-4 flex gap-5 scroll-smooth"
+                  key={index}
+                >
+                  <div className="relative h-8 w-8 shrink-0 rounded-full overflow-clip">
+                    <Image
+                      src={comment?.img_url || '/assets/images/no-profile.jpg'}
+                      layout={'fill'}
+                      alt={'post'}
+                    />
+                  </div>
+                  <div>
+                    <span className="font-semibold">{comment?.username}</span>{' '}
+                    {comment?.comment?.split('\n').map((item, index) => {
+                      return (
+                        <span key={index}>
+                          {item}
+                          <br />{' '}
+                        </span>
+                      );
+                    }) || 'No Description'}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </section>
         <div className="sticky bottom-0 mt-auto bg-white w-full pt-4 border-t">
           <div className="flex items-center gap-5">
@@ -178,18 +237,23 @@ const PostDetail = ({ post }) => {
             </div>
             <form
               className="flex group px-4 bg-gray-6 flex-1"
-              onClick={(e) => e.preventDefault()}
+              onSubmit={handleSubmit(handleAddComments)}
             >
               <textarea
                 rows={1}
                 type={'text'}
                 className="w-full bg-gray-6 rounded-sm placeholder:text-gray-1 py-2 focus:outline-none focus:group-focus:outline-purple-1 resize-none"
                 placeholder="Add a Comment..."
+                {...register('comment', { required: true, maxLength: 200 })}
               ></textarea>
               <Button
                 isSmall
-                className={'bg-gray-6 text-purple-1'}
+                className={classNames(
+                  'bg-gray-6 text-purple-1',
+                  errors.comment && 'text-red-1'
+                )}
                 isBorderless
+                type={'submit'}
               >
                 Comment
               </Button>

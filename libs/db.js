@@ -224,6 +224,22 @@ class DbConnection {
     ]);
     return result[0];
   }
+
+  async addComments(post_id, user_id, Comment) {
+    const connection = await this.getConnection();
+    const [result] = await connection.execute('CALL addComments(?, ?, ?)', [
+      post_id,
+      user_id,
+      Comment,
+    ]);
+    return result;
+  }
+
+  async getComments(post_id) {
+    const connection = await this.getConnection();
+    const [result] = await connection.execute('CALL getComments(?)', [post_id]);
+    return result[0];
+  }
 }
 
 const db = new DbConnection();
