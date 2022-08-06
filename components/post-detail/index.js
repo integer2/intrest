@@ -10,10 +10,12 @@ import { HeartIcon } from '@heroicons/react/solid';
 import classNames from 'classnames';
 import { useForm } from 'react-hook-form';
 import moment from 'moment/moment';
+import Router from 'next/router';
 import { useModal } from 'hooks/useModal';
 
 const PostDetail = ({ post }) => {
   const { user } = useAuth();
+  const modal = useModal();
 
   const [postData, setPostData] = useState({});
   const [loading, setLoading] = useState(true);
@@ -93,6 +95,11 @@ const PostDetail = ({ post }) => {
       comment_id: '',
     });
     await fetchComments(post?.post_id || post.id);
+  };
+
+  const handleClickUsername = (username) => {
+    Router.push(`/user/${username}`);
+    modal.setIsOpen(false);
   };
 
   const handleDoubleTap = (e) => {
@@ -185,7 +192,12 @@ const PostDetail = ({ post }) => {
                   objectFit="cover"
                 />
               </div>
-              {profile?.username}
+              <span
+                className="cursor-pointer"
+                onClick={() => handleClickUsername(profile?.username)}
+              >
+                {profile?.username}
+              </span>
             </div>
           </div>
           {user?.username !== postData?.username && (
@@ -209,7 +221,12 @@ const PostDetail = ({ post }) => {
             />
           </div>
           <div>
-            <span className="font-semibold">{postData?.username}</span>{' '}
+            <span
+              className="font-semibold cursor-pointer"
+              onClick={() => handleClickUsername(profile?.username)}
+            >
+              {postData?.username}
+            </span>{' '}
             {postData?.desc?.split('\n').map((item, index) => {
               return (
                 <span key={index}>
@@ -242,7 +259,12 @@ const PostDetail = ({ post }) => {
                     />
                   </div>
                   <div>
-                    <span className="font-semibold">{comment?.username}</span>{' '}
+                    <span
+                      className="font-semibold cursor-pointer"
+                      onClick={() => handleClickUsername(profile?.username)}
+                    >
+                      {comment?.username}
+                    </span>{' '}
                     {comment?.comment?.split('\n').map((item, index) => {
                       return (
                         <span key={index}>
