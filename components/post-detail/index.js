@@ -197,7 +197,7 @@ const LikedPopUp = () => {
   return (
     <HeartIcon
       className={classNames(
-        'h-20 w-20 transition-all ease-in text-purple-1',
+        'h-20 w-20 transition-all ease-in text-purple-1 text-opacity-70',
         show ? 'scale-100' : 'scale-125'
       )}
     />
