@@ -188,6 +188,24 @@ class DbConnection {
     const [result] = await connection.execute('CALL getFollowed(?)', [user_id]);
     return result[0];
   }
+
+  async checkIsLiked(user_id, post_id) {
+    const connection = await this.getConnection();
+    const [result] = await connection.execute(
+      'SELECT isLiked(?, ?) AS isLiked',
+      [user_id, post_id]
+    );
+    return result;
+  }
+
+  async likePost(user_id, post_id) {
+    const connection = await this.getConnection();
+    const [result] = await connection.execute('CALL like_POST(?, ?)', [
+      user_id,
+      post_id,
+    ]);
+    return result;
+  }
 }
 
 const db = new DbConnection();

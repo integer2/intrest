@@ -38,7 +38,17 @@ const PostDetail = ({ post }) => {
     }
   };
 
-  const handleLike = () => {
+  const checkIsLiked = async (post) => {
+    const result = await API().post('/post/liked', {
+      post_id: post?.post_id || post.id,
+    });
+    setIsLiked(result.data.isLiked);
+  };
+
+  const handleLike = async () => {
+    await API().post('/post/like-post', {
+      post_id: post?.post_id || post.id,
+    });
     setIsLiked(!isLiked);
   };
 
@@ -50,6 +60,9 @@ const PostDetail = ({ post }) => {
       setShowLove(false);
       setIsLiked(true);
       setShowLove(true);
+      if (!isLiked) {
+        handleLike();
+      }
       setTimeout(() => {
         setShowLove(false);
       }, 1000);
@@ -63,6 +76,7 @@ const PostDetail = ({ post }) => {
       }
       fetchPost(post);
       fetchProfile(post.username);
+      checkIsLiked(post);
     } catch (error) {}
     setLoading(false);
   }, [post]);
