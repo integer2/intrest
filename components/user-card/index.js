@@ -1,13 +1,10 @@
-import { UserAddIcon } from '@heroicons/react/outline';
 import { useAuth } from 'context/auth';
 import Image from 'next/image';
 import Router from 'next/router';
 import React from 'react';
-import { Button } from '../button';
 import SubscriptionButton from '../subscription-button';
 
 const UserCard = ({ data }) => {
-  console.log(data);
   const handleClick = () => {
     Router.push('/user/[username]', `/user/${data.username}`);
   };
