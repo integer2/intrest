@@ -8,11 +8,10 @@ export default async function handler(req, res) {
     });
   }
   try {
-    const auth = await authorization(req, res);
-    const { id: user_id } = auth;
+    const { id: user_id } = req.body;
     const result = await db.getFollowersData(user_id);
     return res.status(200).json({ followers: result });
-  } catch (error) {    
+  } catch (error) {
     return res.status(500).json({
       error: error.message,
     });

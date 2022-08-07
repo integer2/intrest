@@ -19,12 +19,12 @@ export default function ProfileHeader({ profile }) {
 
   const openFollowersModal = () => {
     modal.setIsOpen(true);
-    modal.setContent(<FollowersModal closeModal={closeModal} />);
+    modal.setContent(<FollowersModal profile={profile} closeModal={closeModal} />);
   };
 
   const openFollowedModal = () => {
     modal.setIsOpen(true);
-    modal.setContent(<FollowedModal closeModal={closeModal} />);
+    modal.setContent(<FollowedModal profile={profile} closeModal={closeModal} />);
   };
 
   return (

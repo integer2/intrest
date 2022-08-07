@@ -5,22 +5,24 @@ import { useAuth } from 'context/auth';
 import Image from 'next/image';
 import React, { useEffect } from 'react';
 
-const FollowedModal = ({ closeModal }) => {
+const FollowedModal = ({ profile, closeModal }) => {
   const [followers, setFollowers] = React.useState([]);
-  const {user} = useAuth();
+  const { user } = useAuth();
 
-  const getFollowers = async () => {
-    const res = await API().post('/user/followed/get');
+  const getFollowers = async (profile) => {
+    const res = await API().post('/user/followed/get', {
+      id: profile.id,
+    });
     setFollowers(res.data.followed);
   };
 
   useEffect(() => {
     try {
-      getFollowers();
+      getFollowers(profile);
     } catch (error) {
       console.log(error);
     }
-  }, []);
+  }, [profile]);
 
   return (
     <div

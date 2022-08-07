@@ -8,8 +8,7 @@ export default async function handler(req, res) {
     });
   }
   try {    
-    const auth = await authorization(req, res);
-    const { id: user_id } = auth;
+    const { id: user_id } = req.body;
 
     const result = await db.getFollowedData(user_id);
 
