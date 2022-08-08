@@ -1,5 +1,6 @@
 import API from '@/services/api';
 import { UserAddIcon } from '@heroicons/react/solid';
+import { useAuth } from 'context/auth';
 import dataFollowed from 'data/data-followed';
 import React, { useEffect } from 'react';
 import { LoadingFollowedSidebar } from '../loading';
@@ -10,9 +11,12 @@ const FollowMenu = () => {
   const [error, setError] = React.useState(null);
   const [loading, setLoading] = React.useState(true);
   const [showedList, setShowedList] = React.useState([]);
+  const { user } = useAuth();
 
   const fetchFollowedList = async () => {
-    const result = await API().post('/user/followed/get');
+    const result = await API().post('/user/followed/get', {
+      id: user.id,
+    });
     setFollowedList(result.data.followed);
   };
 
