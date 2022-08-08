@@ -13,7 +13,7 @@ const MenuItem = ({ Icon, label, link, isActive, isImage }) => {
         )}
       >
         {isImage ? <ImageIcon imgUrl={Icon} /> : <Icon className={'h-5 w-5'} />}
-        <span>{label}</span>
+        <span className='max-w-[12ch] overflow-hidden text-ellipsis'>{label}</span>
       </a>
     </Link>
   );
